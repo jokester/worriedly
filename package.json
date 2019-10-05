@@ -1,8 +1,8 @@
 {
-  "name": "node-lib",
+  "name": "worriedly",
   "version": "0.1.0",
   "author": "Wang Guan <momocraft@gmail.com>",
-  "private": true,
+  "private": false,
   "index": "build/lib/index",
   "bin": {
     "worriedly": "bin/worriedly"
@@ -13,15 +13,21 @@
     "!build/__test__/"
   ],
   "scripts": {
-    "start": "node build/bin/example-bin",
-    "start:ts": "ts-node src/bin/example-bin",
+    "start": "node build/bin/worriedly",
+    "start:ts": "ts-node src/bin/worriedly",
     "build": "rm -rvf build && tsc",
     "local:install": "yarn build && yarn global add $PWD",
     "test": "jest",
     "test:coverage": "jest --coverage",
+    "typecheck": "tsc --watch --noEmit",
     "lint": "    eslint '**/*.@(ts|js|tsx|jsx)' 'bin/*'",
     "lint:fix": "eslint '**/*.@(ts|js|tsx|jsx)' 'bin/*' --fix"
   },
+  "license": "WTFPL",
+  "bugs": {
+    "url": "https://github.com/jokester/worriedly/issues"
+  },
+  "homepage": "https://github.com/jokester/worriedly#readme",
   "dependencies": {
     "argparse": "^1.0.10",
     "preact": "^10.0.0",
