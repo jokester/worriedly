@@ -5,7 +5,7 @@
   "private": true,
   "index": "build/lib/index",
   "bin": {
-    "example-bin": "bin/worriedly"
+    "worriedly": "bin/worriedly"
   },
   "files": [
     "bin",
