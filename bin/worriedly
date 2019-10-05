@@ -2,4 +2,4 @@
 
 // a dummy entrypoint to run real built js
 
-require('../build/bin/example-bin');
+require('../build/bin/worriedly').cliMain();

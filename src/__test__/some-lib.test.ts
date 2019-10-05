@@ -1,4 +1,4 @@
-import { doSomething } from '../lib';
+import { doSomething } from '../lib/some-lib';
 
 describe('doSomething', () => {
   it('returns 50', async () => {
