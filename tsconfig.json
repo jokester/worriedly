@@ -55,6 +55,7 @@
     "build",
     "__test__",
     "bin",
-    "jest.config.js"
+    "jest.config.js",
+    "src/ts-commonutil"
   ]
 }
