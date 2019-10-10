@@ -11,6 +11,15 @@ export async function worriedlyPrintQr(argv: string[]) {
   await worriedlyPrintQrMain(options);
 }
 
+/**
+ * html: a html with static resources embedded
+ * gif: a gif
+ */
+export enum SupportedOutputFormat {
+  html = 'html',
+  gif = 'gif',
+}
+
 export interface PrintQrOptions {
   inputFile?: string;
   outputFile?: string;
@@ -59,4 +68,19 @@ async function worriedlyPrintQrMain(options: PrintQrOptions) {
   if (!options.verbose) logger.silent = true;
   logger.error('got %d bytes', inputBytes.length);
   logger.error('got %o', inputBytes);
+
+  const outputFormat = inferOutputFormat(options.outputFormat, options.outputFile);
+}
+
+export function inferOutputFormat(specifiedFormat: undefined | string, specifiedOutputFilename: undefined | string): SupportedOutputFormat {
+  if (specifiedFormat) {
+    if (/^(htm|html)$/i.test(specifiedFormat)) return SupportedOutputFormat.html;
+    else if (/^gif$/i.test(specifiedFormat)) return SupportedOutputFormat.gif;
+    else throw new Error(`Cannot recognize output format. ${JSON.stringify(specifiedFormat)} was specified`);
+  } else {
+    if (!specifiedOutputFilename) /* stdin */ return SupportedOutputFormat.html;
+    else if (/\.(htm|html)$/i.test(specifiedOutputFilename)) return SupportedOutputFormat.html;
+    else if (/\.(gif)$/i.test(specifiedOutputFilename)) return SupportedOutputFormat.gif;
+    else throw new Error(`Cannot infer output format from specified output filename ${JSON.stringify(specifiedOutputFilename)}. Please specify one.`);
+  }
 }
