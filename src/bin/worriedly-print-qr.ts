@@ -1,3 +1,5 @@
+import yaqrnode from 'yaqrcode';
+
 import { ArgumentParser } from 'argparse';
 import * as fsp from '../ts-commonutil/node/fsp';
 import { readStream } from '../ts-commonutil/node';
@@ -64,12 +66,24 @@ export function parseOptions(argv: string[]): PrintQrOptions {
 }
 
 async function worriedlyPrintQrMain(options: PrintQrOptions) {
+  /** TODO: add optional base64() for non-visible */
   const inputBytes = options.inputFile ? await fsp.readFile(options.inputFile, { encoding: 'buffer' }) : await readStream(process.stdin);
   if (!options.verbose) logger.silent = true;
+  // TODO: should warn user of capacity/err correcation level of QR code
   logger.error('got %d bytes', inputBytes.length);
   logger.error('got %o', inputBytes);
 
+  const gifDataUri = yaqrnode(inputBytes.toString('base64'));
+  logger.error('generated data uri of %d chars', gifDataUri.length);
+
   const outputFormat = inferOutputFormat(options.outputFormat, options.outputFile);
+
+  await fsp.writeFile('debug-out.gif.datauri', gifDataUri);
+
+  const gifBytesBase64 = gifDataUri.slice('data:image/gif;base64,'.length);
+  const gifBytes = Buffer.from(gifBytesBase64, 'base64');
+
+  await fsp.writeFile('debug-out.gif', gifBytes);
 }
 
 export function inferOutputFormat(specifiedFormat: undefined | string, specifiedOutputFilename: undefined | string): SupportedOutputFormat {
