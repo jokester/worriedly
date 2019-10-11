@@ -74,6 +74,7 @@ async function worriedlyPrintQrMain(options: PrintQrOptions) {
   logger.error('got %o', inputBytes);
 
   // TODO: can we detect QR code in better size?
+  // TODO: figure out how to encode raw bytes (rather than)
   const gifDataUri = yaqrnode(inputBytes.toString('base64'));
   logger.error('generated data uri of %d chars', gifDataUri.length);
 
