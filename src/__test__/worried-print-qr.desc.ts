@@ -34,8 +34,8 @@ describe('bytes', () => {
     expect(buf.readUInt8(255)).toEqual(0xff);
     const { moduleCount, gifDataUri } = createQRFromBytes(buf);
 
-    expect(moduleCount).toMatchSnapshot('moduleCount [0x01 .. 0xff]');
-    expect(gifDataUri).toMatchSnapshot('gifDataUri of [0x01 .. 0xff]');
+    expect(moduleCount).toMatchSnapshot('moduleCount [0x00 .. 0xff]');
+    expect(gifDataUri).toMatchSnapshot('gifDataUri of [0x00 .. 0xff]');
   });
 });
 
