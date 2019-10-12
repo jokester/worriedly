@@ -32,9 +32,11 @@ describe('bytes', () => {
     expect(buf.length).toEqual(bytes.length);
     expect(buf.readUInt8(0)).toEqual(0x000);
     expect(buf.readUInt8(255)).toEqual(0xff);
-    const { moduleCount, gifDataUri } = await createQRFromBytes(buf);
+    const { moduleCount, gifDataUri } = createQRFromBytes(buf);
 
     expect(moduleCount).toMatchSnapshot('moduleCount [0x01 .. 0xff]');
     expect(gifDataUri).toMatchSnapshot('gifDataUri of [0x01 .. 0xff]');
   });
 });
+
+describe('qrcode-generator', () => {});

@@ -1,7 +1,7 @@
 import qrcode from 'qrcode-generator';
 
-export async function createQRFromBytes(bytes: Buffer, errorCorrectionLevel: 'L' | 'M' | 'Q' | 'H' = 'H') {
-  const qr = qrcode(0, 'H');
+export function createQRFromBytes(bytes: Buffer, errorCorrectionLevel: 'L' | 'M' | 'Q' | 'H' = 'H') {
+  const qr = qrcode(0, errorCorrectionLevel);
 
   /**
    * encode bytes into JS UCS-2 string
