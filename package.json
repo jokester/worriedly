@@ -1,11 +1,11 @@
 {
-  "name": "node-lib",
+  "name": "worriedly",
   "version": "0.1.0",
   "author": "Wang Guan <momocraft@gmail.com>",
-  "private": true,
+  "private": false,
   "index": "build/lib/index",
   "bin": {
-    "example-bin": "bin/example-bin"
+    "worriedly": "bin/worriedly"
   },
   "files": [
     "bin",
@@ -13,19 +13,31 @@
     "!build/__test__/"
   ],
   "scripts": {
-    "start": "node build/bin/example-bin",
-    "start:ts": "ts-node src/bin/example-bin",
+    "start": "node build/bin/worriedly",
+    "start:ts": "ts-node src/bin/worriedly",
     "build": "rm -rvf build && tsc",
     "local:install": "yarn build && yarn global add $PWD",
     "test": "jest",
     "test:coverage": "jest --coverage",
+    "typecheck": "tsc --watch --noEmit",
     "lint": "    eslint '**/*.@(ts|js|tsx|jsx)' 'bin/*'",
     "lint:fix": "eslint '**/*.@(ts|js|tsx|jsx)' 'bin/*' --fix"
   },
+  "license": "WTFPL",
+  "bugs": {
+    "url": "https://github.com/jokester/worriedly/issues"
+  },
+  "homepage": "https://github.com/jokester/worriedly#readme",
   "dependencies": {
-    "tslib": "^1.10.0"
+    "argparse": "^1.0.10",
+    "chalk": "^2.4.2",
+    "preact": "^10.0.0",
+    "tslib": "^1.10.0",
+    "winston": "^3.2.1",
+    "yaqrcode": "^0.2.1"
   },
   "devDependencies": {
+    "@types/argparse": "^1.0.36",
     "@types/jest": "^24",
     "@types/node": "<11",
     "@typescript-eslint/eslint-plugin": "^1.12.0",
@@ -37,6 +49,7 @@
     "prettier": "^1.18.2",
     "ts-jest": "^24",
     "ts-node": "^8.1.0",
-    "typescript": "^3.5.3"
+    "typescript": "^3.5.3",
+    "webpack": "^4.41.0"
   }
 }
