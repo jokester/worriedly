@@ -16,10 +16,15 @@ describe('worried-print-qr', () => {
 });
 
 describe('bytes', () => {
-  it('we can encode each to string', () => {
+  it('we can encode a byte array to UCS-2 string and read it back', () => {
+    const bytes = new Array(256).fill(-1).map((_, index) => index);
+
+    const stringEncoded = String.fromCharCode(...bytes);
+    expect(stringEncoded).toHaveLength(256);
+
     for (let i = 0; i < 256; i++) {
-      const char = String.fromCharCode(i);
-      expect(char.charCodeAt(0) & 0xff).toEqual(i);
+      const readBack = stringEncoded.charCodeAt(i) & 0xff; // same as in qrcode-generator
+      expect(readBack).toEqual(bytes[i]);
     }
   });
 });
