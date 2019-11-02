@@ -86,7 +86,10 @@ async function worriedlyPrintQrMain(options: PrintQrOptions) {
   await fsp.writeFile('debug-out.gif', gifBytes);
 }
 
-export function inferOutputFormat(specifiedFormat: undefined | string, specifiedOutputFilename: undefined | string): SupportedOutputFormat {
+export function inferOutputFormat(
+  specifiedFormat: undefined | string,
+  specifiedOutputFilename: undefined | string,
+): SupportedOutputFormat {
   if (specifiedFormat) {
     if (/^(htm|html)$/i.test(specifiedFormat)) return SupportedOutputFormat.html;
     else if (/^gif$/i.test(specifiedFormat)) return SupportedOutputFormat.gif;
@@ -95,6 +98,11 @@ export function inferOutputFormat(specifiedFormat: undefined | string, specified
     if (!specifiedOutputFilename) /* stdin */ return SupportedOutputFormat.html;
     else if (/\.(htm|html)$/i.test(specifiedOutputFilename)) return SupportedOutputFormat.html;
     else if (/\.(gif)$/i.test(specifiedOutputFilename)) return SupportedOutputFormat.gif;
-    else throw new Error(`Cannot infer output format from specified output filename ${JSON.stringify(specifiedOutputFilename)}. Please specify one.`);
+    else
+      throw new Error(
+        `Cannot infer output format from specified output filename ${JSON.stringify(
+          specifiedOutputFilename,
+        )}. Please specify one.`,
+      );
   }
 }
