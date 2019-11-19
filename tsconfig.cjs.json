@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig",
+  "compilerOptions": {
+    "allowJs": false,
+    "checkJs": false,
+    "declaration": true,
+    "noEmit": false,
+    "target": "es6",
+    "module": "commonjs",
+    "jsx": "preserve",
+    "sourceRoot": "src",
+    "outDir": "lib"
+  }
+}

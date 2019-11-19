@@ -8,18 +8,17 @@
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
-    "importHelpers": true,
-    "isolatedModules": false,
     "jsx": "react",
-    "module": "commonjs",
+    "importHelpers": true,
+    "noEmit": true,
+    "module": "esnext",
     "moduleResolution": "node",
-    "noEmit": false,
     "noImplicitReturns": true,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "outDir": "./build",
     "resolveJsonModule": true,
-    "rootDir": "./src",
+    "skipLibCheck": true,
+    "sourceMap": true,
     "strict": true,
     "target": "es6"
   },
@@ -31,6 +30,7 @@
     "__test__",
     "bin",
     "jest.config.js",
+    "webpack*",
     "src/ts-commonutil"
   ]
 }
