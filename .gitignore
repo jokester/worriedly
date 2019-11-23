@@ -2,8 +2,6 @@
 
 !.gitkeep
 
-/.idea
-
 # dependencies
 /node_modules
 /.pnp
@@ -13,7 +11,7 @@
 /coverage
 
 # production
-/lib
+/dist
 
 # misc
 .DS_Store
@@ -25,3 +23,5 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.idea
+/docs/demo

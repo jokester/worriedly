@@ -1,14 +1,12 @@
 {
   "extends": "./tsconfig",
   "compilerOptions": {
-    "allowJs": false,
-    "checkJs": false,
-    "declaration": true,
+    "declaration": false,
     "noEmit": false,
     "target": "es6",
     "module": "commonjs",
-    "jsx": "preserve",
+    "jsx": "react",
     "sourceRoot": "src",
-    "outDir": "lib"
+    "outDir": "dist"
   }
 }

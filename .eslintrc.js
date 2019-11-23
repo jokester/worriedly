@@ -3,6 +3,7 @@ module.exports =  {
   plugins: [ '@typescript-eslint' ],
   extends:  [
     // "eslint:recommended", // not enabling: it reports many TS idioms as error
+    "plugin:react/recommended",
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
     // "plugin:@typescript-eslint/recommended-requiring-type-checking", // cant find for unknonw reason

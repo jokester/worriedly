@@ -3,12 +3,11 @@
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "alwaysStrict": true,
-    "checkJs": false,
+    "checkJs": true,
     "emitDecoratorMetadata": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
-    "jsx": "react",
     "importHelpers": true,
     "noEmit": true,
     "module": "esnext",
@@ -23,6 +22,9 @@
     "target": "es6"
   },
   "exclude": [
+    "dist",
+    "docs",
+    "demo",
     "node_modules",
     "scripts",
     "coverage",
