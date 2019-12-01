@@ -1,8 +1,9 @@
-import { FunctionComponent } from 'preact';
-import React, { useState } from 'preact/compat';
-import { readBlobAsArrayBuffer } from '../../create-qr/encode-blob';
+import { FunctionComponent } from 'react';
+import React, { useState } from 'react';
+import { readBlobAsArrayBuffer } from '../../core/encode-blob';
 import { tailwindComponents } from './tailwind-components';
-import { InputData } from '../../create-qr/types';
+import { InputData } from '../../core/types';
+import jsSha1 from 'js-sha1';
 
 export const Step1FilePicker: FunctionComponent<{
   onSelected(x: InputData): void;
@@ -11,12 +12,11 @@ export const Step1FilePicker: FunctionComponent<{
   const [inputData, setInputData] = useState<null | InputData>(null);
 
   const onFileRead = async (f: File | null | undefined) => {
-    // FIXME: useLifecycle() to prevent hook leak
     if (f) {
       try {
         setReading(true);
         const read = await readBlobAsArrayBuffer(f);
-        setInputData({ filename: f.name, inputBuffer: read });
+        setInputData({ filename: f.name, inputBuffer: read, contentType: f.type, sha1: jsSha1(read) });
         setReading(false);
       } catch (e) {
         alert(String(e));
@@ -27,7 +27,7 @@ export const Step1FilePicker: FunctionComponent<{
 
   return (
     <>
-      <div className="step-content step1">
+      <div className="form-content step1">
         <div className={tailwindComponents.formLine}>
           <label className={tailwindComponents.formLabel}>File</label>
           <input
@@ -49,6 +49,7 @@ export const Step1FilePicker: FunctionComponent<{
               {inputData.filename} ({inputData.inputBuffer.byteLength} bytes)
             </span>
           )}
+          &nbsp;
         </div>
       </div>
       <hr />

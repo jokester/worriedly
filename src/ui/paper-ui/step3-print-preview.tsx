@@ -1,7 +1,7 @@
-import { FunctionComponent } from 'preact';
-import { InputData, QrOptions } from '../../create-qr/types';
-import React, { useMemo } from 'preact/compat';
-import { createQRFromBytes } from '../../create-qr/create-qr';
+import { FunctionComponent } from 'react';
+import { InputData, QrOptions } from '../../core/types';
+import React, { useMemo } from 'react';
+import { createQRFromBytes } from '../../core/create-qr';
 import { tailwindComponents } from './tailwind-components';
 import { createAspectRatioStyle } from '../aspect-ratio/aspect-ratio';
 
@@ -11,15 +11,27 @@ export const Step3PrintPreview: FunctionComponent<{ inputData: InputData; option
     props.options.errorCorrectionLevel,
   ]);
   return (
-    <div className="step3 step-container print-page">
-      <div className="meta-container text-sm">
+    <div className="step3 step-container print-page flex flex-col w-full h-full p-4">
+      <div className="meta-container text-sm flex-1 flex flex-col justify-center">
         <div className={tailwindComponents.formLine}>
-          <label className={tailwindComponents.formLabel}>Filename</label>
+          <label className={tailwindComponents.formLabel}>Created at</label>
+          <span className={tailwindComponents.formInput}>{new Date().toISOString()}</span>
+        </div>
+        <div className={tailwindComponents.formLine}>
+          <label className={tailwindComponents.formLabel}>Raw filename</label>
           <span className={tailwindComponents.formInput}>{props.inputData.filename}</span>
         </div>
         <div className={tailwindComponents.formLine}>
           <label className={tailwindComponents.formLabel}>Raw size</label>
           <span className={tailwindComponents.formInput}>{props.inputData.inputBuffer.byteLength} bytes</span>
+        </div>
+        <div className={tailwindComponents.formLine}>
+          <label className={tailwindComponents.formLabel}>Raw content type</label>
+          <span className={tailwindComponents.formInput}>{props.inputData.contentType || 'unknown'}</span>
+        </div>
+        <div className={tailwindComponents.formLine}>
+          <label className={tailwindComponents.formLabel}>Raw SHA1</label>
+          <span className={tailwindComponents.formInput}>{props.inputData.sha1}</span>
         </div>
         <div className={tailwindComponents.formLine}>
           <label className={tailwindComponents.formLabel}>Encodings</label>

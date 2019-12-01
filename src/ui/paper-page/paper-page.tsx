@@ -1,5 +1,5 @@
-import React from 'preact/compat';
-import { FunctionComponent } from 'preact';
+import React from 'react';
+import { FunctionComponent } from 'react';
 
 import './paper-page.scss';
 
