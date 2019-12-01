@@ -5,7 +5,7 @@ export interface InputData {
   inputBuffer: ArrayBuffer;
 }
 
-export const enum DataFilters {
+export enum DataFilters {
   none = 'none',
 }
 

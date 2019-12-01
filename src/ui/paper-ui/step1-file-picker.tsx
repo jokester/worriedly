@@ -1,5 +1,5 @@
-import { FunctionComponent } from 'preact';
-import React, { useState } from 'preact/compat';
+import { FunctionComponent } from 'react';
+import React, { useState } from 'react';
 import { readBlobAsArrayBuffer } from '../../core/encode-blob';
 import { tailwindComponents } from './tailwind-components';
 import { InputData } from '../../core/types';

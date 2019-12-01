@@ -1,5 +1,5 @@
-import React, { useState } from 'preact/compat';
-import { FunctionComponent } from 'preact';
+import React, { useState } from 'react';
+import { FunctionComponent } from 'react';
 
 import './paper-ui.scss';
 import { tailwindComponents } from './tailwind-components';

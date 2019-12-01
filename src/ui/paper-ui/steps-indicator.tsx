@@ -1,6 +1,6 @@
-import { FunctionComponent } from 'preact';
+import { FunctionComponent } from 'react';
+import React from 'react';
 import classNames from 'classnames';
-import React from 'preact/compat';
 
 export const StepsIndicator: FunctionComponent<{ step: number }> = ({ step }) => (
   <div className="steps-indicator">

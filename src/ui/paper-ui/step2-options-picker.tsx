@@ -1,6 +1,6 @@
-import { FunctionComponent } from 'preact';
+import { FunctionComponent } from 'react';
+import React, { useMemo, useState } from 'react';
 import { DataFilters, InputData, QrOptions } from '../../core/types';
-import React, { useMemo, useState } from 'preact/compat';
 import { encodeArrayBufferToString } from '../../core/encode-blob';
 import { CorrectionLevels, maxNumOfBytes } from '../../core/create-qr';
 import { tailwindComponents } from './tailwind-components';
