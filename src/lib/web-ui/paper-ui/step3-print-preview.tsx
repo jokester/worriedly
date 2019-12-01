@@ -1,7 +1,39 @@
 import { FunctionComponent } from 'preact';
 import { InputData, QrOptions } from '../../create-qr/types';
-import React from 'preact/compat';
+import React, { useMemo } from 'preact/compat';
+import { createQRFromBytes } from '../../create-qr/create-qr';
+import { tailwindComponents } from './tailwind-components';
+import { createAspectRatioStyle } from '../aspect-ratio/aspect-ratio';
 
 export const Step3PrintPreview: FunctionComponent<{ inputData: InputData; options: QrOptions }> = props => {
-  return <div></div>;
+  const encodedQr = useMemo(() => createQRFromBytes(props.options.filteredBytes, props.options.errorCorrectionLevel), [
+    props.options.filteredBytes,
+    props.options.errorCorrectionLevel,
+  ]);
+  return (
+    <div className="step3 step-container print-page">
+      <div className="meta-container text-sm">
+        <div className={tailwindComponents.formLine}>
+          <label className={tailwindComponents.formLabel}>Filename</label>
+          <span className={tailwindComponents.formInput}>{props.inputData.filename}</span>
+        </div>
+        <div className={tailwindComponents.formLine}>
+          <label className={tailwindComponents.formLabel}>Raw size</label>
+          <span className={tailwindComponents.formInput}>{props.inputData.inputBuffer.byteLength} bytes</span>
+        </div>
+        <div className={tailwindComponents.formLine}>
+          <label className={tailwindComponents.formLabel}>Encodings</label>
+          <span className={tailwindComponents.formInput}>{props.options.filters.join('|')} </span>
+        </div>
+        <div className={tailwindComponents.formLine}>
+          <label className={tailwindComponents.formLabel}>Encoded size</label>
+          <span className={tailwindComponents.formInput}>{props.options.filteredBytes.length} bytes</span>
+        </div>
+      </div>
+      <hr />
+      <div className="qr-container" style={createAspectRatioStyle(1)}>
+        <img className="qr-img" src={encodedQr.gifDataUri} alt="encoded-qr-img" />
+      </div>
+    </div>
+  );
 };

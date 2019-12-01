@@ -28,4 +28,16 @@
   .step-content {
     min-height: 40%;
   }
+
+  .qr-container {
+    padding: 16px;
+
+    .qr-img {
+      height: 100%;
+      width: 100%;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+      object-fit: contain;
+    }
+  }
 }

@@ -25,13 +25,13 @@ export function maxNumOfBytes(errorCorrectionLevel: CorrectionLevels) {
   // see https://www.qrcode.com/en/about/version.html
   switch (errorCorrectionLevel) {
     case 'L':
-      return 23648;
+      return 23648 >>> 3;
     case 'M':
-      return 18672;
+      return 18672 >>> 3;
     case 'Q':
-      return 13328;
+      return 13328 >>> 3;
     case 'H':
-      return 10208;
+      return 10208 >>> 3;
     default:
       return -1;
   }

@@ -5,7 +5,7 @@ export const tailwindComponents = {
   buttonBar: 'py-4 px-4 flex justify-end',
   formLine: 'flex justify-between items-baseline',
   formLabel: 'font-bold',
-  formInput: 'bg-white',
+  formInput: 'bg-white monospace',
   fileInput: 'block',
   errorMessage: 'text-red-600 text-sm',
 } as const;
