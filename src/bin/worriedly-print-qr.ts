@@ -1,9 +1,8 @@
-import yaqrnode from 'yaqrcode';
-
 import { ArgumentParser } from 'argparse';
 import * as fsp from '../ts-commonutil/node/fsp';
 import { readStream } from '../ts-commonutil/node';
 import { getWinstonLogger } from '../ts-commonutil/logging/winston-logger';
+import { createQRFromBytes } from '../lib/creating-qr';
 
 const logger = getWinstonLogger(__filename, 'debug');
 
@@ -66,20 +65,19 @@ export function parseOptions(argv: string[]): PrintQrOptions {
 }
 
 async function worriedlyPrintQrMain(options: PrintQrOptions) {
-  /** TODO: add optional base64() for non-visible */
-  const inputBytes = options.inputFile ? await fsp.readFile(options.inputFile, { encoding: 'buffer' }) : await readStream(process.stdin);
-  if (!options.verbose) logger.silent = true;
-  // TODO: should warn user of capacity/err correcation level of QR code
-  logger.error('got %d bytes', inputBytes.length);
-  logger.error('got %o', inputBytes);
+  const inputBytes: Buffer = options.inputFile
+    ? (((await fsp.readFile(options.inputFile, { encoding: 'buffer' })) as unknown) as Buffer)
+    : await readStream(process.stdin);
 
-  // TODO: can we detect QR code in better size?
-  // TODO: figure out how to encode raw bytes (rather than)
-  const gifDataUri = yaqrnode(inputBytes.toString('base64'));
-  logger.error('generated data uri of %d chars', gifDataUri.length);
+  // TODO: should warn user of capacity/err correcation level of QR codepac
+  logger.info('got %d bytes', inputBytes.length);
+  logger.info('got %o', inputBytes);
 
   const outputFormat = inferOutputFormat(options.outputFormat, options.outputFile);
+  const { moduleCount, gifDataUri } = await createQRFromBytes(inputBytes);
 
+  logger.info('genereated moduleCount=%d', moduleCount);
+  logger.info('generated data uri of %d chars', gifDataUri.length);
   await fsp.writeFile('debug-out.gif.datauri', gifDataUri);
 
   const gifBytesBase64 = gifDataUri.slice('data:image/gif;base64,'.length);
@@ -88,7 +86,10 @@ async function worriedlyPrintQrMain(options: PrintQrOptions) {
   await fsp.writeFile('debug-out.gif', gifBytes);
 }
 
-export function inferOutputFormat(specifiedFormat: undefined | string, specifiedOutputFilename: undefined | string): SupportedOutputFormat {
+export function inferOutputFormat(
+  specifiedFormat: undefined | string,
+  specifiedOutputFilename: undefined | string,
+): SupportedOutputFormat {
   if (specifiedFormat) {
     if (/^(htm|html)$/i.test(specifiedFormat)) return SupportedOutputFormat.html;
     else if (/^gif$/i.test(specifiedFormat)) return SupportedOutputFormat.gif;
@@ -97,6 +98,11 @@ export function inferOutputFormat(specifiedFormat: undefined | string, specified
     if (!specifiedOutputFilename) /* stdin */ return SupportedOutputFormat.html;
     else if (/\.(htm|html)$/i.test(specifiedOutputFilename)) return SupportedOutputFormat.html;
     else if (/\.(gif)$/i.test(specifiedOutputFilename)) return SupportedOutputFormat.gif;
-    else throw new Error(`Cannot infer output format from specified output filename ${JSON.stringify(specifiedOutputFilename)}. Please specify one.`);
+    else
+      throw new Error(
+        `Cannot infer output format from specified output filename ${JSON.stringify(
+          specifiedOutputFilename,
+        )}. Please specify one.`,
+      );
   }
 }

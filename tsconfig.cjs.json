@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig",
+  "compilerOptions": {
+    "declaration": false,
+    "noEmit": false,
+    "target": "es6",
+    "module": "commonjs",
+    "sourceRoot": "src",
+    "outDir": "dist"
+  }
+}

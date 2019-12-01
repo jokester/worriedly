@@ -1,4 +1,5 @@
-import { parseOptions, inferOutputFormat, SupportedOutputFormat } from '../bin/worriedly-print-qr';
+import { inferOutputFormat, SupportedOutputFormat } from '../bin/worriedly-print-qr';
+import { createQRFromBytes } from '../lib/creating-qr';
 describe('worried-print-qr', () => {
   it('parses option', () => {});
 
@@ -14,3 +15,28 @@ describe('worried-print-qr', () => {
     expect(() => inferOutputFormat(undefined, 'x.svg')).toThrowError(/^cannot infer/i);
   });
 });
+
+describe('bytes', () => {
+  it('we can encode a byte array to UCS-2 string and read it back', async () => {
+    const bytes = new Array(256).fill(-1).map((_, index) => index);
+
+    const stringEncoded = String.fromCharCode(...bytes);
+    expect(stringEncoded).toHaveLength(256);
+
+    for (let i = 0; i < 256; i++) {
+      const readBack = stringEncoded.charCodeAt(i) & 0xff; // same as in qrcode-generator
+      expect(readBack).toEqual(bytes[i]);
+    }
+
+    const buf = Buffer.from(bytes);
+    expect(buf.length).toEqual(bytes.length);
+    expect(buf.readUInt8(0)).toEqual(0x000);
+    expect(buf.readUInt8(255)).toEqual(0xff);
+    const { moduleCount, gifDataUri } = createQRFromBytes(buf);
+
+    expect(moduleCount).toMatchSnapshot('moduleCount [0x00 .. 0xff]');
+    expect(gifDataUri).toMatchSnapshot('gifDataUri of [0x00 .. 0xff]');
+  });
+});
+
+describe('qrcode-generator', () => {});

@@ -2,17 +2,17 @@
 
 -----------------------------------
 
-`worriedly` is a CLI tool set that helps worried people to preserve (or exchange) digital information in non-electronic form.
+`worriedly` is a CLI tool set to preserve digital information (bytes) in non-electronic form (printed paper).
 
 To make its user less worried, all the functionalities use no network connection.
 
-## Print arbitrary bytes onto paper, as QR code
+## Create printable QR code from bytes
 
 ```
 $ worriedly print-qr -i file -o qr.htm
 ```
 
-## Extract bytes from QR code
+## Extract bytes from printed QR code
 
 This requires a WebRTC-capable browser.
 

@@ -1,0 +1,43 @@
+.paper-ui {
+  height: 100%;
+  width: 100%;
+  padding: 20px;
+
+  .steps-indicator {
+    width: 100%;
+    min-height: 20%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    ol {
+      width: 100%;
+      .step {
+        &.current {
+          font-weight: bold;
+        }
+
+        &.future {
+          color: gray;
+        }
+      }
+    }
+  }
+
+  .step-content {
+    min-height: 40%;
+  }
+
+  .qr-container {
+    padding: 16px;
+
+    .qr-img {
+      height: 100%;
+      width: 100%;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+      object-fit: contain;
+    }
+  }
+}
