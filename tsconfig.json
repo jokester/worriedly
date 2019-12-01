@@ -36,6 +36,7 @@
     "jest.config.js",
     "webpack*",
     "src/ts-commonutil",
-    "gatsby-*"
+    "gatsby-*",
+    "public"
   ]
 }
