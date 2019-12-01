@@ -8,6 +8,6 @@ export const StepsIndicator: FunctionComponent<{ step: number }> = ({ step: sele
     <span>{'+'}</span>
     <span className={tailwindComponents.step(2, selectedStep)}>a few options</span>
     <span>{'=>'}</span>
-    <span className={tailwindComponents.step(3, selectedStep)}>QR code</span>
+    <span className={tailwindComponents.step(3, selectedStep)}>printable QR code</span>
   </div>
 );

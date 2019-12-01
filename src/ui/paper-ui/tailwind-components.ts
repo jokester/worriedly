@@ -6,7 +6,7 @@ export const tailwindComponents = {
   buttonDisabled: 'bg-blue-300 text-white font-bold py-2 px-4 rounded cursor-not-allowed ml-4',
   buttonBar: 'py-4 px-4 flex justify-end button-bar',
   formLine: 'flex justify-between items-baseline',
-  formLabel: 'font-semibold',
+  formLabel: 'font-light',
   formInput: 'monospace',
   fileInput: 'block',
   errorMessage: 'text-red-600 text-sm',

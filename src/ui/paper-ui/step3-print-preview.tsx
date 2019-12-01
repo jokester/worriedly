@@ -11,8 +11,8 @@ export const Step3PrintPreview: FunctionComponent<{ inputData: InputData; option
     props.options.errorCorrectionLevel,
   ]);
   return (
-    <div className="step3 step-container print-page">
-      <div className="meta-container text-sm">
+    <div className="step3 step-container print-page flex flex-col w-full h-full p-4">
+      <div className="meta-container text-sm flex-1">
         <div className={tailwindComponents.formLine}>
           <label className={tailwindComponents.formLabel}>Filename</label>
           <span className={tailwindComponents.formInput}>{props.inputData.filename}</span>
