@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { readBlobAsArrayBuffer } from '../../core/encode-blob';
 import { tailwindComponents } from './tailwind-components';
 import { InputData } from '../../core/types';
+import jsSha1 from 'js-sha1';
 
 export const Step1FilePicker: FunctionComponent<{
   onSelected(x: InputData): void;
@@ -15,7 +16,7 @@ export const Step1FilePicker: FunctionComponent<{
       try {
         setReading(true);
         const read = await readBlobAsArrayBuffer(f);
-        setInputData({ filename: f.name, inputBuffer: read });
+        setInputData({ filename: f.name, inputBuffer: read, contentType: f.type, sha1: jsSha1(read) });
         setReading(false);
       } catch (e) {
         alert(String(e));

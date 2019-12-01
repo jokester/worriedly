@@ -3,6 +3,8 @@ import { CorrectionLevels } from './create-qr';
 export interface InputData {
   filename: string;
   inputBuffer: ArrayBuffer;
+  contentType: string;
+  sha1: string;
 }
 
 export enum DataFilters {

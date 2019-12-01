@@ -18,12 +18,20 @@ export const Step3PrintPreview: FunctionComponent<{ inputData: InputData; option
           <span className={tailwindComponents.formInput}>{new Date().toISOString()}</span>
         </div>
         <div className={tailwindComponents.formLine}>
-          <label className={tailwindComponents.formLabel}>Filename</label>
+          <label className={tailwindComponents.formLabel}>Raw filename</label>
           <span className={tailwindComponents.formInput}>{props.inputData.filename}</span>
         </div>
         <div className={tailwindComponents.formLine}>
           <label className={tailwindComponents.formLabel}>Raw size</label>
           <span className={tailwindComponents.formInput}>{props.inputData.inputBuffer.byteLength} bytes</span>
+        </div>
+        <div className={tailwindComponents.formLine}>
+          <label className={tailwindComponents.formLabel}>Raw content type</label>
+          <span className={tailwindComponents.formInput}>{props.inputData.contentType || 'unknown'}</span>
+        </div>
+        <div className={tailwindComponents.formLine}>
+          <label className={tailwindComponents.formLabel}>Raw SHA1</label>
+          <span className={tailwindComponents.formInput}>{props.inputData.sha1}</span>
         </div>
         <div className={tailwindComponents.formLine}>
           <label className={tailwindComponents.formLabel}>Encodings</label>
