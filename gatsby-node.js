@@ -7,7 +7,7 @@ exports.onCreateWebpackConfig = ({ actions, stage }) => {
     })
   }
 
-  actions.setWebpackConfig({
+  false && actions.setWebpackConfig({
     externals: [
       {
         'react': 'React',
