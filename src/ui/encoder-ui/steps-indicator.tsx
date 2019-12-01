@@ -1,6 +1,6 @@
 import { FunctionComponent } from 'react';
 import React from 'react';
-import { tailwindComponents } from './tailwind-components';
+import { tailwindComponents } from '../tailwind-components';
 
 export const StepsIndicator: FunctionComponent<{ step: number }> = ({ step: selectedStep }) => (
   <div className={tailwindComponents.stepsContainer}>

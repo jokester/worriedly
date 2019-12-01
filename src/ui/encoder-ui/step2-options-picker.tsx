@@ -3,7 +3,7 @@ import React, { useMemo, useState } from 'react';
 import { DataFilters, InputData, QrOptions } from '../../core/types';
 import { encodeArrayBufferToString } from '../../core/encode-blob';
 import { CorrectionLevels, maxNumOfBytes } from '../../core/create-qr';
-import { tailwindComponents } from './tailwind-components';
+import { tailwindComponents } from '../tailwind-components';
 
 export const Step2OptionsPicker: FunctionComponent<{
   inputData: InputData;

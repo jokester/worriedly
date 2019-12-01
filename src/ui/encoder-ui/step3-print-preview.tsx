@@ -2,7 +2,7 @@ import { FunctionComponent } from 'react';
 import { InputData, QrOptions } from '../../core/types';
 import React, { useMemo } from 'react';
 import { createQRFromBytes } from '../../core/create-qr';
-import { tailwindComponents } from './tailwind-components';
+import { tailwindComponents } from '../tailwind-components';
 import { createAspectRatioStyle } from '../aspect-ratio/aspect-ratio';
 
 export const Step3PrintPreview: FunctionComponent<{ inputData: InputData; options: QrOptions }> = props => {

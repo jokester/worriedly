@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { FunctionComponent } from 'react';
 
 import './paper-ui.scss';
-import { tailwindComponents } from './tailwind-components';
 import { Step1FilePicker } from './step1-file-picker';
 import { StepsIndicator } from './steps-indicator';
 import { InputData, QrOptions } from '../../core/types';
@@ -17,19 +16,12 @@ export const PaperUI: FunctionComponent = props => {
 
   return (
     <>
+      <hr className="mb-2" />
       <div className="unprintable">
-        <div className="unprintable">
-          <h1 className={tailwindComponents.appTitle}>Worriedly</h1>
-          <a href="https://github.com/jokester/worriedly" target="_blank" rel="noreferrer noopener">
-            github
-          </a>
-        </div>
-        <hr className="unprintable" />
         <StepsIndicator step={step} />
-        <hr className="mb-2" />
       </div>
       <PaperPage>
-        <div className="h-full w-full paper-ui flex-col">
+        <div className="h-full w-full encoder-ui flex-col">
           {step === 1 && (
             <Step1FilePicker
               onSelected={input => {

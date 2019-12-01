@@ -1,7 +1,7 @@
 import React from 'preact/compat';
 import ReactDOM from 'preact/compat';
 import { PaperPage } from '../src/ui/paper-page/paper-page';
-import { PaperUI } from '../src/ui/paper-ui/paper-ui';
+import { PaperUI } from '../src/ui/encoder-ui/paper-ui';
 
 function registerHMR() {
   type ModuleHMR = typeof module & {
