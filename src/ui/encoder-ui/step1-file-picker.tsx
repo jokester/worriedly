@@ -55,7 +55,7 @@ export const Step1FilePicker: FunctionComponent<{
       <hr />
       <div className={tailwindComponents.buttonBar}>
         <button
-          className={reading || !inputData ? tailwindComponents.buttonDisabled : tailwindComponents.button}
+          className={tailwindComponents.button(reading || !inputData)}
           disabled={reading || !inputData}
           onClick={() => inputData && props.onSelected(inputData)}
         >

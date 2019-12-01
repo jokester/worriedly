@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FunctionComponent } from 'react';
 
-import './paper-ui.scss';
+import './encoder-ui.scss';
 import { Step1FilePicker } from './step1-file-picker';
 import { StepsIndicator } from './steps-indicator';
 import { InputData, QrOptions } from '../../core/types';
@@ -9,7 +9,7 @@ import { Step2OptionsPicker } from './step2-options-picker';
 import { Step3PrintPreview } from './step3-print-preview';
 import { PaperPage } from '../paper-page/paper-page';
 
-export const PaperUI: FunctionComponent = props => {
+export const EncoderUi: FunctionComponent = props => {
   const [step, setStep] = useState(1);
   const [inputData, setInputData] = useState<null | InputData>(null);
   const [options, setOptions] = useState<null | QrOptions>(null);

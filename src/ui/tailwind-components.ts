@@ -2,8 +2,10 @@ import classNames from 'classnames';
 
 export const tailwindComponents = {
   appTitle: 'text-2xl inline-block px-4',
-  button: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4',
-  buttonDisabled: 'bg-blue-300 text-white font-bold py-2 px-4 rounded cursor-not-allowed ml-4',
+  button: (disabled: boolean) =>
+    !disabled
+      ? 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4'
+      : 'bg-blue-300 text-white font-bold py-2 px-4 rounded cursor-not-allowed ml-4',
   buttonBar: 'py-4 px-4 flex justify-end button-bar',
   formLine: 'flex justify-between items-baseline flex-wrap border-b border-gray-300 border-solid ',
   // formLine: 'block',

@@ -64,11 +64,11 @@ export const Step2OptionsPicker: FunctionComponent<{
       </div>
       <hr />
       <div className={tailwindComponents.buttonBar}>
-        <button className={tailwindComponents.button} onClick={() => props.onBack && props.onBack()}>
+        <button className={tailwindComponents.button(false)} onClick={() => props.onBack && props.onBack()}>
           Back
         </button>
         <button
-          className={!canProceed ? tailwindComponents.buttonDisabled : tailwindComponents.button}
+          className={tailwindComponents.button(!canProceed)}
           disabled={!canProceed}
           onClick={() => {
             props.onOptionsSet &&

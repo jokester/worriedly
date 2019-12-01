@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { HtmlHeader } from '../ui/html-headers';
-import { PaperUI } from '../ui/encoder-ui/paper-ui';
+import { EncoderUi } from '../ui/encoder-ui/encoder-ui';
 import { AppBanner } from '../ui/banner/app-banner';
 
 const IndexPage: FC = () => {
@@ -8,8 +8,8 @@ const IndexPage: FC = () => {
   return (
     <>
       <HtmlHeader />
-      <AppBanner />
-      <PaperUI />
+      <AppBanner encoding={encoding} onSwitchEncoding={setEncoding} />
+      {encoding ? <EncoderUi /> : <div>TODO</div>}
     </>
   );
 };
