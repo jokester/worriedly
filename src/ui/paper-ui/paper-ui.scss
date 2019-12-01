@@ -3,41 +3,26 @@
   width: 100%;
   padding: 20px;
 
-  .steps-indicator {
-    width: 100%;
-    min-height: 20%;
-
+  .form-content {
+    height: 70%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-
-    ol {
-      width: 100%;
-      .step {
-        &.current {
-          font-weight: bold;
-        }
-
-        &.future {
-          color: gray;
-        }
-      }
-    }
+    justify-content: flex-end;
+    padding-bottom: 1em;
   }
 
-  .step-content {
-    min-height: 40%;
+  .button-bar {
   }
+}
 
-  .qr-container {
-    padding: 16px;
+.qr-container {
+  padding: 16px;
 
-    .qr-img {
-      height: 100%;
-      width: 100%;
-      image-rendering: pixelated;
-      image-rendering: crisp-edges;
-      object-fit: contain;
-    }
+  .qr-img {
+    height: 100%;
+    width: 100%;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    object-fit: contain;
   }
 }

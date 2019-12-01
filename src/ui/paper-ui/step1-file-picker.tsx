@@ -11,7 +11,6 @@ export const Step1FilePicker: FunctionComponent<{
   const [inputData, setInputData] = useState<null | InputData>(null);
 
   const onFileRead = async (f: File | null | undefined) => {
-    // FIXME: useLifecycle() to prevent hook leak
     if (f) {
       try {
         setReading(true);
@@ -27,7 +26,7 @@ export const Step1FilePicker: FunctionComponent<{
 
   return (
     <>
-      <div className="step-content step1">
+      <div className="form-content step1">
         <div className={tailwindComponents.formLine}>
           <label className={tailwindComponents.formLabel}>File</label>
           <input
@@ -49,6 +48,7 @@ export const Step1FilePicker: FunctionComponent<{
               {inputData.filename} ({inputData.inputBuffer.byteLength} bytes)
             </span>
           )}
+          &nbsp;
         </div>
       </div>
       <hr />

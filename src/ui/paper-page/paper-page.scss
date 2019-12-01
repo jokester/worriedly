@@ -1,17 +1,16 @@
 .paper-page-container {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
   display: flex;
   position: relative;
   justify-content: center;
   align-items: center;
 
   .paper-page {
-    max-width: calc(100vh / (297 / 210) - 32px);
+    max-width: calc((100vh - 90px) / (297 / 210) - 32px);
     width: calc(100vw - 32px);
 
-    background-color: #f5f5f5;
-    border: 0.5px dotted black;
+    //background-color: #f5f5f5;
+    border: 0.5px solid black;
 
     position: relative;
   }

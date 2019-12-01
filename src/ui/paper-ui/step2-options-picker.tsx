@@ -8,6 +8,7 @@ import { tailwindComponents } from './tailwind-components';
 export const Step2OptionsPicker: FunctionComponent<{
   inputData: InputData;
   onOptionsSet?(options: QrOptions): void;
+  onBack?(): void;
 }> = props => {
   const [errorCorrectionLevel, setCorrectionLevel] = useState<CorrectionLevels>('H');
 
@@ -30,7 +31,7 @@ export const Step2OptionsPicker: FunctionComponent<{
 
   return (
     <>
-      <div className="step-content step2">
+      <div className="form-content step2">
         <div className={tailwindComponents.formLine}>
           <label className={tailwindComponents.formLabel}>Raw filename</label>
           <span className={tailwindComponents.formInput}>{props.inputData.filename}</span>
@@ -63,7 +64,7 @@ export const Step2OptionsPicker: FunctionComponent<{
       </div>
       <hr />
       <div className={tailwindComponents.buttonBar}>
-        <button className={tailwindComponents.buttonDisabled} disabled>
+        <button className={tailwindComponents.button} onClick={() => props.onBack && props.onBack()}>
           Back
         </button>
         <button
