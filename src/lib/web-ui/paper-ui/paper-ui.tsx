@@ -3,12 +3,16 @@ import { FunctionComponent } from 'preact';
 
 import './paper-ui.scss';
 import { tailwindComponents } from './tailwind-components';
-import { FilePicker } from './file-picker';
+import { Step1FilePicker } from './step1-file-picker';
 import { StepsIndicator } from './steps-indicator';
+import { InputData, QrOptions } from '../../create-qr/types';
+import { Step2OptionsPicker } from './step2-options-picker';
+import { Step3PrintPreview } from './step3-print-preview';
 
 export const PaperUI: FunctionComponent = props => {
   const [step, setStep] = useState(1);
-  const [bytes, setBytes] = useState<null | ArrayBuffer>(null);
+  const [inputData, setInputData] = useState<null | InputData>(null);
+  const [options, setOptions] = useState<null | QrOptions>(null);
 
   return (
     <div className="paper-ui">
@@ -20,16 +24,29 @@ export const PaperUI: FunctionComponent = props => {
       </div>
       <hr />
       <StepsIndicator step={step} />
+
       <hr className="my-2" />
+
       {step === 1 && (
-        <FilePicker
-          onSelected={arrayBuffer => {
-            setBytes(arrayBuffer);
+        <Step1FilePicker
+          onSelected={input => {
+            setInputData(input);
             setStep(2);
           }}
         />
       )}
-      {step === 2 && 1}
+
+      {step === 2 && inputData && (
+        <Step2OptionsPicker
+          inputData={inputData}
+          onOptionsSet={o => {
+            setStep(3);
+            setOptions(o);
+          }}
+        />
+      )}
+
+      {step === 3 && inputData && options && <Step3PrintPreview inputData={inputData} options={options} />}
     </div>
   );
 };
