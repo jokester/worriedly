@@ -20,10 +20,11 @@
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
-    "target": "es6"
+    "target": "esnext"
   },
   "exclude": [
     "dist",
+    ".cache",
     "docs",
     "demo",
     "node_modules",
@@ -34,6 +35,7 @@
     "bin",
     "jest.config.js",
     "webpack*",
-    "src/ts-commonutil"
+    "src/ts-commonutil",
+    "gatsby-*"
   ]
 }

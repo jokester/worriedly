@@ -1,8 +1,8 @@
 import { FunctionComponent } from 'preact';
 import React, { useState } from 'preact/compat';
-import { readBlobAsArrayBuffer } from '../../create-qr/encode-blob';
+import { readBlobAsArrayBuffer } from '../../core/encode-blob';
 import { tailwindComponents } from './tailwind-components';
-import { InputData } from '../../create-qr/types';
+import { InputData } from '../../core/types';
 
 export const Step1FilePicker: FunctionComponent<{
   onSelected(x: InputData): void;

@@ -5,7 +5,7 @@ import './paper-ui.scss';
 import { tailwindComponents } from './tailwind-components';
 import { Step1FilePicker } from './step1-file-picker';
 import { StepsIndicator } from './steps-indicator';
-import { InputData, QrOptions } from '../../create-qr/types';
+import { InputData, QrOptions } from '../../core/types';
 import { Step2OptionsPicker } from './step2-options-picker';
 import { Step3PrintPreview } from './step3-print-preview';
 

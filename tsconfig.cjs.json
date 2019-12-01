@@ -5,7 +5,7 @@
     "noEmit": false,
     "target": "es6",
     "module": "commonjs",
-    "sourceRoot": "src",
+    "rootDir": "src",
     "outDir": "dist"
   }
 }

@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'preact';
-import { InputData, QrOptions } from '../../create-qr/types';
+import { InputData, QrOptions } from '../../core/types';
 import React, { useMemo } from 'preact/compat';
-import { createQRFromBytes } from '../../create-qr/create-qr';
+import { createQRFromBytes } from '../../core/create-qr';
 import { tailwindComponents } from './tailwind-components';
 import { createAspectRatioStyle } from '../aspect-ratio/aspect-ratio';
 
