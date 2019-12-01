@@ -1,6 +1,5 @@
-import React from 'preact/compat';
-import { FunctionComponent } from 'preact';
+import React, { FC } from 'react';
 
-const IndexPage: FunctionComponent = () => <div>it works!</div>;
+const IndexPage: FC = () => <div>it works!</div>;
 
 export default IndexPage;

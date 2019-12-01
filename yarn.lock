@@ -1240,7 +1240,7 @@
     "@types/history" "*"
     "@types/react" "*"
 
-"@types/react@*":
+"@types/react@*", "@types/react@^16.9.13":
   version "16.9.13"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.9.13.tgz#b3ea5dd443f4a680599e2abba8cc66f5e1ce0059"
   integrity sha512-LikzRslbiufJYHyzbHSW0GrAiff8QYLMBFeZmSxzCYGXKxi8m/1PHX+rsVOwhr7mJNq+VIu2Dhf7U6mjFERK6w==
@@ -5010,13 +5010,6 @@ gatsby-plugin-page-creator@^2.1.32:
     glob "^7.1.6"
     lodash "^4.17.15"
     micromatch "^3.1.10"
-
-gatsby-plugin-preact@^3.1.22:
-  version "3.1.22"
-  resolved "https://registry.yarnpkg.com/gatsby-plugin-preact/-/gatsby-plugin-preact-3.1.22.tgz#3c4b77262e84915edc8c91043496258436802b49"
-  integrity sha512-ZRcRaky3dz9DA74agbFj9ctf9mQr5oklAjFZfAGZGJDv0C9Mpcf1yjm85rWn8aTfZsrbm5qqdUn9pshsid4F7g==
-  dependencies:
-    "@babel/runtime" "^7.7.4"
 
 gatsby-plugin-react-helmet@^3.1.16:
   version "3.1.16"
@@ -9122,11 +9115,6 @@ postcss@^7.0.0, postcss@^7.0.1, postcss@^7.0.23, postcss@^7.0.5:
     chalk "^2.4.2"
     source-map "^0.6.1"
     supports-color "^6.1.0"
-
-preact@^10.0.5:
-  version "10.0.5"
-  resolved "https://registry.yarnpkg.com/preact/-/preact-10.0.5.tgz#16f0bcd77241693e710778069e703217dd497867"
-  integrity sha512-62+J+GTrv3Uhp6DefqZTel6VYcdUA1zqHO7gjQSKdOwkU2sNOp/Vl6Zf2A3hIWV5EBgjeDA8gsOn6dmB3I1Dvg==
 
 prelude-ls@~1.1.2:
   version "1.1.2"

@@ -6,4 +6,14 @@ exports.onCreateWebpackConfig = ({ actions, stage }) => {
       devtool: false,
     })
   }
+
+  actions.setWebpackConfig({
+    externals: [
+      {
+        'react': 'React',
+        'react-dom': 'ReactDOM',
+      }
+    ],
+  });
+
 };
