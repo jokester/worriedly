@@ -29,6 +29,16 @@ module.exports = {
     },
     `gatsby-plugin-typescript`,
     `gatsby-plugin-preact`,
+    {
+      resolve: "gatsby-plugin-webpack-bundle-analyser-v2",
+      options: {
+        analyzerMode: 'static',
+        reportFilename: `${__dirname}/webpack-bundler-analyzer-report.html`,
+        openAnalyzer: false,
+        generateStatsFile: true,
+        statsFilename: `${__dirname}/webpack-bundler-analyzer-stats.json`,
+      },
+    },
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     // `gatsby-plugin-offline`,
