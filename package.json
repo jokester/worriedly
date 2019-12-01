@@ -24,8 +24,8 @@
     "test:coverage": "jest --coverage",
     "typecheck": "tsc --noEmit",
     "typecheck:watch": "tsc --watch --noEmit",
-    "lint": "    eslint '**/*.@(ts|js|tsx|jsx)' 'bin/*'",
-    "lint:fix": "eslint '**/*.@(ts|js|tsx|jsx)' 'bin/*' --fix"
+    "lint": "    eslint 'src/**/*.@(ts|js|tsx|jsx)' 'bin/*' 'demo/*.tsx'",
+    "lint:fix": "eslint 'src/**/*.@(ts|js|tsx|jsx)' 'bin/*' 'demo/*.tsx' --fix"
   },
   "license": "WTFPL",
   "bugs": {
@@ -35,6 +35,7 @@
   "dependencies": {
     "argparse": "^1.0.10",
     "chalk": "^2.4.2",
+    "classnames": "^2.2.6",
     "preact": "^10.0.0",
     "qrcode-generator": "^1.4.4",
     "tslib": "^1.10.0",
@@ -42,6 +43,7 @@
   },
   "devDependencies": {
     "@types/argparse": "^1.0.36",
+    "@types/classnames": "^2.2.9",
     "@types/jest": "^24",
     "@types/node": "<11",
     "@typescript-eslint/eslint-plugin": "^2.3.3",

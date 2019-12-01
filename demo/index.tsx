@@ -1,6 +1,7 @@
 import React from 'preact/compat';
 import ReactDOM from 'preact/compat';
-import { PaperPage } from '../src/lib/web-ui/paper-page';
+import { PaperPage } from '../src/lib/web-ui/paper-page/paper-page';
+import { PaperUI } from '../src/lib/web-ui/paper-ui/paper-ui';
 
 function registerHMR() {
   type ModuleHMR = typeof module & {
@@ -16,7 +17,12 @@ function registerHMR() {
 }
 
 function render() {
-  ReactDOM.render(<PaperPage />, document.getElementById('root') as HTMLElement);
+  ReactDOM.render(
+    <PaperPage>
+      <PaperUI />
+    </PaperPage>,
+    document.getElementById('root') as HTMLElement,
+  );
 }
 
 registerHMR();
