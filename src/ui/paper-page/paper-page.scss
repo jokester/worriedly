@@ -1,3 +1,7 @@
+body {
+  background-color: #f5f5f5;
+}
+
 .paper-page-container {
   width: 100%;
   display: flex;
@@ -6,12 +10,25 @@
   align-items: center;
 
   .paper-page {
+    background-color: white;
     max-width: calc((100vh - 90px) / (297 / 210) - 32px);
     width: calc(100vw - 32px);
 
-    //background-color: #f5f5f5;
     border: 0.5px solid black;
 
     position: relative;
+  }
+  @media print {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+}
+
+.unprintable {
+  @media print {
+    display: none;
   }
 }

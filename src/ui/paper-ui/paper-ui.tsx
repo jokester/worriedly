@@ -17,15 +17,17 @@ export const PaperUI: FunctionComponent = props => {
 
   return (
     <>
-      <div>
-        <h1 className={tailwindComponents.appTitle}>Worriedly</h1>
-        <a href="https://github.com/jokester/worriedly" target="_blank" rel="noreferrer noopener">
-          github
-        </a>
+      <div className="unprintable">
+        <div className="unprintable">
+          <h1 className={tailwindComponents.appTitle}>Worriedly</h1>
+          <a href="https://github.com/jokester/worriedly" target="_blank" rel="noreferrer noopener">
+            github
+          </a>
+        </div>
+        <hr className="unprintable" />
+        <StepsIndicator step={step} />
+        <hr className="mb-2" />
       </div>
-      <hr />
-      <StepsIndicator step={step} />
-      <hr className="mb-2" />
       <PaperPage>
         <div className="h-full w-full paper-ui flex-col">
           {step === 1 && (
