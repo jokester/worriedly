@@ -1,6 +1,6 @@
 import { FunctionComponent } from 'react';
 import React, { useState } from 'react';
-import { readBlobAsArrayBuffer } from '../../core/encode-blob';
+import { readBlobAsArrayBuffer } from '../../core/web/encode-blob';
 import { tailwindComponents } from '../tailwind-components';
 import { InputData } from '../../core/types';
 import jsSha1 from 'js-sha1';

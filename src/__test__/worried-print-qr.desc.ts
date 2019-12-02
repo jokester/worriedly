@@ -1,5 +1,6 @@
 import { inferOutputFormat, SupportedOutputFormat } from '../bin/worriedly-print-qr';
-import { createQRFromBytes } from '../node/creating-qr';
+import { encodeBuffer } from '../core/node/creating-qr';
+import { createQR } from '../core/qr/create-qr';
 describe('worried-print-qr', () => {
   it('parses option', () => {});
 
@@ -32,7 +33,7 @@ describe('bytes', () => {
     expect(buf.length).toEqual(bytes.length);
     expect(buf.readUInt8(0)).toEqual(0x000);
     expect(buf.readUInt8(255)).toEqual(0xff);
-    const { moduleCount, gifDataUri } = createQRFromBytes(buf);
+    const { moduleCount, gifDataUri } = createQR(encodeBuffer(buf));
 
     expect(moduleCount).toMatchSnapshot('moduleCount [0x00 .. 0xff]');
     expect(gifDataUri).toMatchSnapshot('gifDataUri of [0x00 .. 0xff]');

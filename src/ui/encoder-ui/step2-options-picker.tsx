@@ -1,8 +1,8 @@
 import { FunctionComponent } from 'react';
 import React, { useMemo, useState } from 'react';
 import { DataFilters, InputData, QrOptions } from '../../core/types';
-import { encodeArrayBufferToString } from '../../core/encode-blob';
-import { CorrectionLevels, maxNumOfBytes } from '../../core/create-qr';
+import { encodeArrayBufferToString } from '../../core/web/encode-blob';
+import { CorrectionLevels, maxNumOfBytes } from '../../core/qr/create-qr';
 import { tailwindComponents } from '../tailwind-components';
 
 export const Step2OptionsPicker: FunctionComponent<{

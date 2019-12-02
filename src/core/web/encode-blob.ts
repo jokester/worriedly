@@ -12,6 +12,10 @@ export function encodeArrayBufferToString(arrayBuffer: ArrayBuffer): string {
   return String.fromCharCode(...uint8array);
 }
 
+/**
+ * TODO: move to ts-commonutils
+ * @param blob
+ */
 export async function readBlobAsArrayBuffer(blob: Blob): Promise<ArrayBuffer> {
   const fr = new FileReader();
 

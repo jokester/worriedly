@@ -1,4 +1,4 @@
-import { CorrectionLevels } from './create-qr';
+import { CorrectionLevels } from './qr/create-qr';
 
 export interface InputData {
   filename: string;

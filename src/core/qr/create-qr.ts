@@ -2,7 +2,7 @@ import qrcode from 'qrcode-generator';
 
 export type CorrectionLevels = Parameters<typeof qrcode>[1];
 
-export function createQRFromBytes(encodedBytes: string, errorCorrectionLevel: CorrectionLevels = 'H') {
+export function createQR(encodedBytes: string, errorCorrectionLevel: CorrectionLevels = 'H') {
   throwIfLengthExceeded(errorCorrectionLevel, encodedBytes.length);
 
   const qr = qrcode(0, errorCorrectionLevel);
@@ -10,7 +10,6 @@ export function createQRFromBytes(encodedBytes: string, errorCorrectionLevel: Co
   qr.addData(encodedBytes, 'Byte');
   qr.make();
 
-  // TODO: what are better size for qr code (considering resolution for print/scan)
   const moduleCount = qr.getModuleCount();
 
   const gifDataUri = qr.createDataURL(1, 0);
@@ -18,7 +17,7 @@ export function createQRFromBytes(encodedBytes: string, errorCorrectionLevel: Co
   return {
     moduleCount,
     gifDataUri,
-  };
+  } as const;
 }
 
 export function maxNumOfBytes(errorCorrectionLevel: CorrectionLevels) {
