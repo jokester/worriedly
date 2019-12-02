@@ -1,5 +1,5 @@
 import { inferOutputFormat, SupportedOutputFormat } from '../bin/worriedly-print-qr';
-import { createQRFromBytes } from '../lib/creating-qr';
+import { createQRFromBytes } from '../node/creating-qr';
 describe('worried-print-qr', () => {
   it('parses option', () => {});
 

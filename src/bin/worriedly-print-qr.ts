@@ -2,7 +2,7 @@ import { ArgumentParser } from 'argparse';
 import * as fsp from '../ts-commonutil/node/fsp';
 import { readStream } from '../ts-commonutil/node';
 import { getWinstonLogger } from '../ts-commonutil/logging/winston-logger';
-import { createQRFromBytes } from '../lib/creating-qr';
+import { createQRFromBytes } from '../node/creating-qr';
 
 const logger = getWinstonLogger(__filename, 'debug');
 

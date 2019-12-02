@@ -2,7 +2,7 @@ import { FunctionComponent } from 'react';
 import React from 'react';
 import { tailwindComponents } from '../tailwind-components';
 
-export const StepsIndicator: FunctionComponent<{ step: number }> = ({ step: selectedStep }) => (
+export const EncoderSteps: FunctionComponent<{ step: number }> = ({ step: selectedStep }) => (
   <div className={tailwindComponents.stepsContainer}>
     <span className={tailwindComponents.step(1, selectedStep)}>a file</span>
     <span>{'+'}</span>

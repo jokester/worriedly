@@ -3,7 +3,7 @@ import { FunctionComponent } from 'react';
 
 import './encoder-ui.scss';
 import { Step1FilePicker } from './step1-file-picker';
-import { StepsIndicator } from './steps-indicator';
+import { EncoderSteps } from './encoder-steps';
 import { InputData, QrOptions } from '../../core/types';
 import { Step2OptionsPicker } from './step2-options-picker';
 import { Step3PrintPreview } from './step3-print-preview';
@@ -18,7 +18,7 @@ export const EncoderUi: FunctionComponent = props => {
     <>
       <hr className="mb-2" />
       <div className="unprintable">
-        <StepsIndicator step={step} />
+        <EncoderSteps step={step} />
       </div>
       <PaperPage>
         <div className="h-full w-full encoder-ui flex-col">

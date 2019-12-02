@@ -13,7 +13,6 @@ export function createQRFromBytes(bytes: Buffer, errorCorrectionLevel: 'L' | 'M'
   qr.addData(stringEncodedBytes, 'Byte');
   qr.make();
 
-  // TODO: what are better size for qr code (considering resolution for print/scan)
   const moduleCount = qr.getModuleCount();
 
   const gifDataUri = qr.createDataURL(1, 0);
