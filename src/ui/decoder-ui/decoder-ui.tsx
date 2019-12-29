@@ -1,12 +1,25 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { PaperPage } from '../paper-page/paper-page';
 import { DecoderSteps } from './decoder-steps';
 import { ImagePicker } from './image-scanner';
+import { Deferred } from '../../ts-commonutil/concurrency/deferred';
+import { Result } from '@zxing/library';
+import { Step1ImageScanner } from './step1-image-scanner';
+import { getLogLevelLogger } from '../../ts-commonutil/logging/loglevel-logger';
+
+const logger = getLogLevelLogger(__filename, 'DEBUG');
 
 export const DecoderUI: React.FC = props => {
   const [step, setStep] = useState(1);
-  const [imageBlob, setImageBlob] = useState<null | Blob>();
-  const imgUrl = useMemo(() => (imageBlob ? URL.createObjectURL(imageBlob) : null), [imageBlob]);
+
+  const decoded = useMemo(() => new Deferred<Result>(), []);
+
+  useEffect(() => {
+    decoded.then(
+      result => logger.info('result', result),
+      error => logger.error('error', error),
+    );
+  }, []);
 
   return (
     <>
@@ -15,17 +28,7 @@ export const DecoderUI: React.FC = props => {
         <DecoderSteps step={step} />
       </div>
       <PaperPage>
-        <div>
-          {step === 1 && (
-            <ImagePicker
-              onImage={blob => {
-                setImageBlob(blob);
-                setStep(2);
-              }}
-            />
-          )}
-          {step === 2 && imgUrl && <img src={imgUrl} />}
-        </div>
+        <div>{step === 1 && <Step1ImageScanner onResult={decoded} />}</div>
       </PaperPage>
     </>
   );
