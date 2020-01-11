@@ -25,3 +25,12 @@ export async function readBlobAsArrayBuffer(blob: Blob): Promise<ArrayBuffer> {
     fr.readAsArrayBuffer(blob);
   });
 }
+
+export function decodeStringToArrayBuffer(str: string): ArrayBuffer {
+  const buf = new ArrayBuffer(str.length);
+  const uint8View = new Uint8Array(buf);
+  for (let i = 0; i < str.length; i++) {
+    uint8View[i] = str.codePointAt(i)!;
+  }
+  return buf;
+}

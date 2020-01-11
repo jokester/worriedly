@@ -6,6 +6,8 @@ import { Deferred } from '../../ts-commonutil/concurrency/deferred';
 import { Result } from '@zxing/library';
 import { Step1ImageScanner } from './step1-image-scanner';
 import { getLogLevelLogger } from '../../ts-commonutil/logging/loglevel-logger';
+import jsSha1 from 'js-sha1';
+import { decodeStringToArrayBuffer } from '../../core/web/encode-blob';
 
 const logger = getLogLevelLogger(__filename, 'DEBUG');
 
@@ -16,7 +18,11 @@ export const DecoderUI: React.FC = props => {
 
   useEffect(() => {
     decoded.then(
-      result => logger.info('result', result),
+      async result => {
+        logger.info('result', result, result.getText().length);
+        const sha1 = jsSha1(decodeStringToArrayBuffer(result.getText()));
+        logger.info('result sha1', sha1);
+      },
       error => logger.error('error', error),
     );
   }, []);
@@ -28,7 +34,7 @@ export const DecoderUI: React.FC = props => {
         <DecoderSteps step={step} />
       </div>
       <PaperPage>
-        <div>{step === 1 && <Step1ImageScanner onResult={decoded} />}</div>
+        <div className="w-full">{step === 1 && <Step1ImageScanner onResult={decoded} />}</div>
       </PaperPage>
     </>
   );

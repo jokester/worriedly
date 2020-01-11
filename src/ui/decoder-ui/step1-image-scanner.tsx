@@ -4,6 +4,7 @@ import { usePromised } from '../../ts-commonutil/react/hook/use-promised';
 import { Deferred } from '../../ts-commonutil/concurrency/deferred';
 import { tailwindComponents } from '../tailwind-components';
 import classNames from 'classnames';
+import { createAspectRatioStyle } from '../aspect-ratio/aspect-ratio';
 
 function enumerateDevices(reader: BrowserQRCodeReader) {
   if (!reader.canEnumerateDevices) throw 'cannot';
@@ -33,6 +34,8 @@ export const Step1ImageScanner: React.FC<{ onResult: Deferred<Result> }> = props
   const videoRef = useRef<HTMLVideoElement>(null!);
   const fileInputRef = useRef<HTMLInputElement>(null!);
 
+  const imgRef = useRef<HTMLImageElement>(null!);
+
   const [inited, setInited] = useState(false);
 
   const onDeviceSelected = async (deviceId: string) => {
@@ -42,7 +45,8 @@ export const Step1ImageScanner: React.FC<{ onResult: Deferred<Result> }> = props
 
   const onImageSelected = async (blob: Blob) => {
     const url = URL.createObjectURL(blob);
-    const scanned = await codeReader.decodeFromImageUrl(url);
+    imgRef.current.src = url;
+    const scanned = await codeReader.decodeFromImageElement(imgRef.current);
     props.onResult.fulfill(scanned);
   };
 
@@ -54,7 +58,10 @@ export const Step1ImageScanner: React.FC<{ onResult: Deferred<Result> }> = props
 
   return (
     <div>
-      <video ref={videoRef} />
+      <div style={createAspectRatioStyle(1)}>
+        <img ref={imgRef} className="absolute w-full h-full" />
+        <video ref={videoRef} className="absolute w-full h-full top-0 left-0" />
+      </div>
       <div>
         <input type="file" accept="image/*" onChange={onChange} hidden ref={fileInputRef} />
         <button onClick={() => fileInputRef.current.click()} className={classNames(tailwindComponents.button(false))}>
