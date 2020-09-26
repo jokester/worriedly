@@ -38,6 +38,7 @@
     "argparse": "^1.0.10",
     "chalk": "^2.4.2",
     "classnames": "^2.2.6",
+    "fp-ts": "^2.8.3",
     "js-sha1": "^0.6.0",
     "qrcode-generator": "^1.4.4",
     "react": "^16.12.0",
