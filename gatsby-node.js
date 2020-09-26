@@ -1,19 +1,17 @@
 exports.onCreateWebpackConfig = ({ actions, stage }) => {
-  // If production JavaScript and CSS build
-  if (stage === 'build-javascript') {
-    // Turn off source maps
+  0 &&
     actions.setWebpackConfig({
-      devtool: false,
-    })
-  }
-
-  false && actions.setWebpackConfig({
-    externals: [
-      {
-        'react': 'React',
-        'react-dom': 'ReactDOM',
-      }
-    ],
-  });
-
+      devServer: {
+        port: 443,
+      },
+    });
+  0 &&
+    actions.setWebpackConfig({
+      externals: [
+        {
+          react: 'React',
+          'react-dom': 'ReactDOM',
+        },
+      ],
+    });
 };

@@ -9,7 +9,7 @@ import { Step2OptionsPicker } from './step2-options-picker';
 import { Step3PrintPreview } from './step3-print-preview';
 import { PaperPage } from '../paper-page/paper-page';
 
-export const EncoderUi: FunctionComponent = props => {
+export const EncoderUi: React.FC = (props) => {
   const [step, setStep] = useState(1);
   const [inputData, setInputData] = useState<null | InputData>(null);
   const [options, setOptions] = useState<null | QrOptions>(null);
@@ -24,7 +24,7 @@ export const EncoderUi: FunctionComponent = props => {
         <div className="h-full w-full encoder-ui flex-col">
           {step === 1 && (
             <Step1FilePicker
-              onSelected={input => {
+              onSelected={(input) => {
                 setInputData(input);
                 setStep(2);
               }}
@@ -34,7 +34,7 @@ export const EncoderUi: FunctionComponent = props => {
           {step === 2 && inputData && (
             <Step2OptionsPicker
               inputData={inputData}
-              onOptionsSet={o => {
+              onOptionsSet={(o) => {
                 setStep(3);
                 setOptions(o);
               }}

@@ -13,10 +13,10 @@ export const tailwindComponents = {
   formInput: 'monospace',
   fileInput: 'block',
   errorMessage: 'text-red-600 text-sm',
-  stepsContainer: `flex width-100 align-center justify-center font-mono py-2`,
+  stepsContainer: `flex width-100 max-w-screen-sm mx-auto align-center justify-center font-mono py-2`,
   step: (step: number, selected: number) =>
     classNames(
-      `inline-block mx-4`,
+      `mx-4`,
       0 && `border border-gray-600 border-solid p-2`,
       step === selected && 'font-bold',
       step > selected && 'text-gray-500',

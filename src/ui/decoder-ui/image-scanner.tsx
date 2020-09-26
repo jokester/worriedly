@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const ImagePicker: React.FC<{ onImage(b: Blob): void }> = props => {
+export const ImagePicker: React.FC<{ onImage(b: Blob): void }> = (props) => {
   const onChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
     if (ev.target.files && ev.target.files[0]) {
       props.onImage(ev.target.files[0]);

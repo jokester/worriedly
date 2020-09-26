@@ -1,7 +1,7 @@
-import React from 'preact/compat';
-import ReactDOM from 'preact/compat';
 import { PaperPage } from '../src/ui/paper-page/paper-page';
 import { EncoderUi } from '../src/ui/encoder-ui/encoder-ui';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 function registerHMR() {
   type ModuleHMR = typeof module & {

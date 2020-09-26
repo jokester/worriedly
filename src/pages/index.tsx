@@ -1,17 +1,15 @@
 import React, { FC, useState } from 'react';
 import { HtmlHeader } from '../ui/html-headers';
 import { EncoderUi } from '../ui/encoder-ui/encoder-ui';
-import { AppBanner } from '../ui/banner/app-banner';
 import { DecoderUI } from '../ui/decoder-ui/decoder-ui';
+import { LayoutRoot } from '../ui/layout/layout-root';
+import { Main } from "../ui/main";
 
 const IndexPage: FC = () => {
-  const [encoding, setEncoding] = useState(true);
   return (
-    <div>
-      <HtmlHeader />
-      <AppBanner encoding={encoding} onSwitchEncoding={setEncoding} />
-      {encoding ? <EncoderUi /> : <DecoderUI />}
-    </div>
+    <LayoutRoot>
+      <Main />
+    </LayoutRoot>
   );
 };
 

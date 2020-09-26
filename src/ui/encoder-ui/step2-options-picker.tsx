@@ -8,7 +8,7 @@ export const Step2OptionsPicker: FunctionComponent<{
   inputData: InputData;
   onOptionsSet?(options: QrOptions): void;
   onBack?(): void;
-}> = props => {
+}> = (props) => {
   const [errorCorrectionLevel, setCorrectionLevel] = useState<CorrectionLevels>('H');
 
   const maxFilteredLength = useMemo(() => maxNumOfBytes(errorCorrectionLevel), [errorCorrectionLevel]);
@@ -26,7 +26,7 @@ export const Step2OptionsPicker: FunctionComponent<{
     encoded.length > maxFilteredLength && 'Exceeds capacity of QR code at current correction level',
   ] as const;
 
-  const canProceed = !errorMsg.some(_ => _);
+  const canProceed = !errorMsg.some((_) => _);
 
   return (
     <>
@@ -44,7 +44,7 @@ export const Step2OptionsPicker: FunctionComponent<{
           <select
             className={tailwindComponents.formInput}
             value={errorCorrectionLevel}
-            onChange={ev => setCorrectionLevel((ev.target as HTMLSelectElement).value as CorrectionLevels)}
+            onChange={(ev) => setCorrectionLevel((ev.target as HTMLSelectElement).value as CorrectionLevels)}
           >
             <option value="H">H (up to {maxNumOfBytes('H')} bytes)</option>
             <option value="Q">Q (up to {maxNumOfBytes('Q')} bytes)</option>
@@ -83,7 +83,7 @@ export const Step2OptionsPicker: FunctionComponent<{
       </div>
       <ul className={tailwindComponents.errorMessage}>
         {errorMsg
-          .filter(_ => _)
+          .filter((_) => _)
           .map((text, i) => (
             <li key={i}>{text}</li>
           ))}

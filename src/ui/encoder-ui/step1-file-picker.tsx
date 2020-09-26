@@ -7,11 +7,11 @@ import jsSha1 from 'js-sha1';
 
 export const Step1FilePicker: FunctionComponent<{
   onSelected(x: InputData): void;
-}> = props => {
+}> = (props) => {
   const [reading, setReading] = useState(false);
   const [inputData, setInputData] = useState<null | InputData>(null);
 
-  const onFileRead = async (f: File | null | undefined) => {
+  const onFileRead = async (f: File) => {
     if (f) {
       try {
         setReading(true);
@@ -36,9 +36,9 @@ export const Step1FilePicker: FunctionComponent<{
             placeholder="XXX"
             disabled={reading}
             className={tailwindComponents.formInput}
-            onChange={ev => {
+            onChange={(ev) => {
               const target = ev && (ev.target as HTMLInputElement);
-              onFileRead(target && target.files && target.files[0]);
+              target.files?.length && onFileRead(target.files[0]);
             }}
           />
         </div>
