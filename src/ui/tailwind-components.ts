@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 
 export const tailwindComponents = {
-  appTitle: 'text-2xl inline-block px-4',
+  appTitle: 'text-3xl inline-block',
   button: (disabled: boolean) =>
     !disabled
       ? 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4'
@@ -13,7 +13,7 @@ export const tailwindComponents = {
   formInput: 'monospace',
   fileInput: 'block',
   errorMessage: 'text-red-600 text-sm',
-  stepsContainer: `flex width-100 max-w-screen-sm mx-auto align-center justify-center font-mono py-2`,
+  stepsContainer: `flex width-100 max-w-screen-sm mx-auto items-center justify-center font-mono py-2`,
   step: (step: number, selected: number) =>
     classNames(
       `mx-4`,
