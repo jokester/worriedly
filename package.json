@@ -33,6 +33,7 @@
   },
   "homepage": "https://github.com/jokester/worriedly#readme",
   "dependencies": {
+    "@jokester/ts-commonutil": "^0.2.2",
     "@zxing/library": "^0.15.2",
     "argparse": "^1.0.10",
     "chalk": "^2.4.2",

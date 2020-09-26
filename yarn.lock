@@ -1010,6 +1010,11 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
+"@jokester/ts-commonutil@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@jokester/ts-commonutil/-/ts-commonutil-0.2.2.tgz#fc6a14adb485f9fc6e93fe2245fab5034115109b"
+  integrity sha512-rfgbKpF7PefIaLUzegaL2BXky3YbJussPFPiaCZ8t82F6WngI7UQemEvE4zNHaH6Xjnz/EJWjIaWVmVULi2tXA==
+
 "@mikaelkristiansson/domready@^1.0.9":
   version "1.0.9"
   resolved "https://registry.yarnpkg.com/@mikaelkristiansson/domready/-/domready-1.0.9.tgz#b2b85d8ac7bb2797e577050b61aeaf1b26fbd906"
