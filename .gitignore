@@ -27,3 +27,4 @@ yarn-error.log*
 /docs/demo
 .cache
 webpack-bundler-analyzer-*
+public

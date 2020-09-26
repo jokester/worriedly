@@ -16,7 +16,7 @@
     "start": "node build/bin/worriedly",
     "start:ts": "ts-node src/bin/worriedly",
     "build": "rm -rf dist && tsc --project tsconfig.cjs.json",
-    "build:demo": "rm -rf docs/latest public && gatsby build && mv public docs/latest",
+    "build:demo": "rm -rf docs/latest public && gatsby build",
     "dev": "gatsby develop",
     "local:install": "yarn build && yarn global add $PWD",
     "test": "jest",
