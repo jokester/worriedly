@@ -1,13 +1,8 @@
 import qrcode from 'qrcode-generator';
 
-export enum CorrectionLevels {
-  L = 'L',
-  M = 'M',
-  Q = 'Q',
-  H = 'H',
-}
+export type CorrectionLevels = 'H' | 'Q' | 'M' | 'L';
 
-export function createQR(encodedBytes: string, errorCorrectionLevel: CorrectionLevels = CorrectionLevels.H) {
+export function createQR(encodedBytes: string, errorCorrectionLevel: CorrectionLevels) {
   throwIfLengthExceeded(errorCorrectionLevel, encodedBytes.length);
 
   const qr = qrcode(0, errorCorrectionLevel);

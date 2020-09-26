@@ -1,5 +1,4 @@
-import { FunctionComponent } from 'react';
-import React, { useMemo, useState } from 'react';
+import React, { FunctionComponent, useMemo, useState } from 'react';
 import { DataFilters, InputData, QrOptions } from '../../core/types';
 import { encodeArrayBufferToString } from '../../core/web/encode-blob';
 import { CorrectionLevels, maxNumOfBytes } from '../../core/qr/create-qr';

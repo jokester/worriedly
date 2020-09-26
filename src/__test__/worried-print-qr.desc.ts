@@ -33,7 +33,7 @@ describe('bytes', () => {
     expect(buf.length).toEqual(bytes.length);
     expect(buf.readUInt8(0)).toEqual(0x000);
     expect(buf.readUInt8(255)).toEqual(0xff);
-    const { moduleCount, gifDataUri } = createQR(encodeBuffer(buf));
+    const { moduleCount, gifDataUri } = createQR(encodeBuffer(buf), 'H');
 
     expect(moduleCount).toMatchSnapshot('moduleCount [0x00 .. 0xff]');
     expect(gifDataUri).toMatchSnapshot('gifDataUri of [0x00 .. 0xff]');

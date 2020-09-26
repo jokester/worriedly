@@ -1,10 +1,10 @@
 import React, { useMemo, useRef, useState } from 'react';
 import { BrowserQRCodeReader, Result } from '@zxing/library';
-import { usePromised } from '../../ts-commonutil/react/hook/use-promised';
-import { Deferred } from '../../ts-commonutil/concurrency/deferred';
 import { tailwindComponents } from '../tailwind-components';
 import classNames from 'classnames';
 import { createAspectRatioStyle } from '../aspect-ratio/aspect-ratio';
+import { Deferred } from '@jokester/ts-commonutil/lib/concurrency/deferred';
+import { usePromised } from '@jokester/ts-commonutil/lib/react/hook/use-promised';
 
 function enumerateDevices(reader: BrowserQRCodeReader) {
   if (!reader.canEnumerateDevices) throw 'cannot';

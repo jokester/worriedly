@@ -2,12 +2,12 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { PaperPage } from '../paper-page/paper-page';
 import { DecoderSteps } from './decoder-steps';
 import { ImagePicker } from './image-scanner';
-import { Deferred } from '../../ts-commonutil/concurrency/deferred';
 import { Result } from '@zxing/library';
 import { Step1ImageScanner } from './step1-image-scanner';
-import { getLogLevelLogger } from '../../ts-commonutil/logging/loglevel-logger';
 import jsSha1 from 'js-sha1';
 import { decodeStringToArrayBuffer } from '../../core/web/encode-blob';
+import { getLogLevelLogger } from '@jokester/ts-commonutil/lib/logging/loglevel-logger';
+import { Deferred } from '@jokester/ts-commonutil/lib/concurrency/deferred';
 
 const logger = getLogLevelLogger(__filename, 'DEBUG');
 

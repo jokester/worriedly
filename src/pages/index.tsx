@@ -7,11 +7,11 @@ import { DecoderUI } from '../ui/decoder-ui/decoder-ui';
 const IndexPage: FC = () => {
   const [encoding, setEncoding] = useState(true);
   return (
-    <>
+    <div>
       <HtmlHeader />
       <AppBanner encoding={encoding} onSwitchEncoding={setEncoding} />
       {encoding ? <EncoderUi /> : <DecoderUI />}
-    </>
+    </div>
   );
 };
 
