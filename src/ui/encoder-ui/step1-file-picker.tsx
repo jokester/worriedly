@@ -1,9 +1,9 @@
 import { FunctionComponent } from 'react';
 import React, { useState } from 'react';
-import { readBlobAsArrayBuffer } from '../../core/model/binary-conversion/conversion-es';
 import { tailwindComponents } from '../tailwind-components';
-import { RawFile } from '../../core/model/types';
 import jsSha1 from 'js-sha1';
+import { binaryConversion } from '../../core/binary-conversion';
+import { RawFile } from "../../core/model/pipeline";
 
 export const Step1FilePicker: FunctionComponent<{
   onSelected(x: RawFile): void;
@@ -15,7 +15,7 @@ export const Step1FilePicker: FunctionComponent<{
     if (f) {
       try {
         setReading(true);
-        const read = await readBlobAsArrayBuffer(f);
+        const read = await binaryConversion.blob.toArrayBuffer(f);
         setInputData({ filename: f.name, inputBuffer: read, contentType: f.type, sha1: jsSha1(read) });
         setReading(false);
       } catch (e) {

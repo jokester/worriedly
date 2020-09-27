@@ -1,6 +1,10 @@
 import { decodeStringToArrayBuffer, encodeArrayBufferToString } from './conversion-es';
 import { readBlobAsArrayBuffer } from './conversion-web';
+import { convertBufferToString } from './conversion-node';
 
+/**
+ * TODO: move to ts-commonutils
+ */
 export const binaryConversion = {
   arrayBuffer: {
     toString: encodeArrayBufferToString,
@@ -13,6 +17,6 @@ export const binaryConversion = {
     toString: (b: Blob) => readBlobAsArrayBuffer(b).then(encodeArrayBufferToString),
   },
   buffer: {
-    // TODO
+    toString: convertBufferToString,
   },
 } as const;

@@ -2,7 +2,12 @@ import qrcode from 'qrcode-generator';
 
 export type CorrectionLevels = 'H' | 'Q' | 'M' | 'L';
 
-export function createQR(encodedBytes: string, errorCorrectionLevel: CorrectionLevels) {
+export interface QrRendition {
+  readonly moduleCount: number;
+  readonly gifDataUri: string;
+}
+
+export function createQR(encodedBytes: string, errorCorrectionLevel: CorrectionLevels): QrRendition {
   throwIfLengthExceeded(errorCorrectionLevel, encodedBytes.length);
 
   const qr = qrcode(0, errorCorrectionLevel);
@@ -20,7 +25,7 @@ export function createQR(encodedBytes: string, errorCorrectionLevel: CorrectionL
   } as const;
 }
 
-export function maxNumOfBytes(errorCorrectionLevel: CorrectionLevels) {
+export function maxNumOfBytes(errorCorrectionLevel: CorrectionLevels): number {
   // see https://www.qrcode.com/en/about/version.html
   switch (errorCorrectionLevel) {
     case 'L':

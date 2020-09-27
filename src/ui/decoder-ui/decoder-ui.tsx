@@ -5,7 +5,7 @@ import { ImagePicker } from './image-scanner';
 import { Result } from '@zxing/library';
 import { Step1ImageScanner } from './step1-image-scanner';
 import jsSha1 from 'js-sha1';
-import { decodeStringToArrayBuffer } from '../../core/model/binary-conversion/conversion-es';
+import { decodeStringToArrayBuffer } from '../../core/binary-conversion/conversion-es';
 import { getLogLevelLogger } from '@jokester/ts-commonutil/lib/logging/loglevel-logger';
 import { Deferred } from '@jokester/ts-commonutil/lib/concurrency/deferred';
 

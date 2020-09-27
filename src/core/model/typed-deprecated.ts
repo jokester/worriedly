@@ -1,21 +1,15 @@
 import { CorrectionLevels } from '../qr/create-qr';
 
-export interface RawFile {
-  filename: string;
-  inputBuffer: ArrayBuffer;
-  contentType: string;
-  sha1: string;
-}
-
-export interface RawQr {
-  bytes: string;
-  gifString: string;
-}
-
+/**
+ * @deprecated
+ */
 export enum DataFilters {
   none = 'none',
 }
 
+/**
+ * @deprecated
+ */
 export interface QrOptions {
   filters: DataFilters[];
   filteredBytes: string; // inputBuffer filtered by a chain of filters

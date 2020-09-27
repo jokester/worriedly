@@ -1,8 +1,9 @@
 import React, { FunctionComponent, useMemo, useState } from 'react';
-import { DataFilters, RawFile, QrOptions } from '../../core/model/types';
-import { encodeArrayBufferToString } from '../../core/model/binary-conversion/conversion-es';
+import { DataFilters, QrOptions } from '../../core/model/typed-deprecated';
+import { encodeArrayBufferToString } from '../../core/binary-conversion/conversion-es';
 import { CorrectionLevels, maxNumOfBytes } from '../../core/qr/create-qr';
 import { tailwindComponents } from '../tailwind-components';
+import { RawFile } from '../../core/model/pipeline';
 
 export const Step2OptionsPicker: FunctionComponent<{
   inputData: RawFile;

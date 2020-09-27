@@ -3,17 +3,17 @@ import React, { useMemo, useState } from 'react';
 import './encoder-ui.scss';
 import { Step1FilePicker } from './step1-file-picker';
 import { EncoderSteps } from './encoder-steps';
-import { RawFile, QrOptions } from '../../core/model/types';
+import { QrOptions } from '../../core/model/typed-deprecated';
 import { Step2OptionsPicker } from './step2-options-picker';
 import { Step3PrintPreview } from './step3-print-preview';
-import { EncodePipelineState } from '../../core/model/encode-pipeline';
 import { Never } from '@jokester/ts-commonutil/lib/concurrency/timing';
 import { usePromised } from '@jokester/ts-commonutil/lib/react/hook/use-promised';
 import { StepArrow, StepContainer, StepContent, StepDesc } from '../components/step-container';
 import { FilePicker } from '../components/file-picker';
-import { readBlobAsArrayBuffer } from '../../core/model/binary-conversion/conversion-es';
 import { getLogLevelLogger } from '@jokester/ts-commonutil/lib/logging/loglevel-logger';
 import jsSha1 from 'js-sha1';
+import { binaryConversion } from '../../core/binary-conversion';
+import { EncodedQr, RawFile } from '../../core/model/pipeline';
 
 const logger = getLogLevelLogger('encoder-ui', 'debug');
 
@@ -24,14 +24,14 @@ export const EncoderUI2: React.FC = (props) => {
     if (!inputFile) return Never;
 
     const f = inputFile;
-    const read = await readBlobAsArrayBuffer(f);
+    const read = await binaryConversion.blob.toArrayBuffer(f);
     return { filename: f.name, inputBuffer: read, contentType: f.type, sha1: jsSha1(read) };
   }, [inputFile]);
   const inputData = usePromised(inputDataP);
 
   const [options, setOptions] = useState<null | QrOptions>(null);
 
-  const [encodedP, setEncodedP] = useState<Promise<EncodePipelineState>>(Never);
+  const [encodedP, setEncodedP] = useState<Promise<EncodedQr>>(Never);
 
   const encoded = usePromised(encodedP);
 

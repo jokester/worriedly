@@ -1,9 +1,10 @@
 import { FunctionComponent } from 'react';
-import { RawFile, QrOptions } from '../../core/model/types';
+import { QrOptions } from '../../core/model/typed-deprecated';
 import React, { useMemo } from 'react';
 import { createQR } from '../../core/qr/create-qr';
 import { tailwindComponents } from '../tailwind-components';
 import { createAspectRatioStyle } from '../aspect-ratio/aspect-ratio';
+import { RawFile } from "../../core/model/pipeline";
 
 export const Step3PrintPreview: FunctionComponent<{ inputData: RawFile; options: QrOptions }> = props => {
   const encodedQr = useMemo(() => createQR(props.options.filteredBytes, props.options.errorCorrectionLevel), [
