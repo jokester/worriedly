@@ -1,6 +1,8 @@
 import { DeepReadonly } from '@jokester/ts-commonutil/lib/type';
+import { RawFile } from './types';
 
 export enum PipeType {
+  readBytes,
   assertQrCapacity,
   computeSHA1,
 
@@ -19,7 +21,7 @@ export interface PipeSpec {
   qrLevel?: 'H';
 }
 
-export interface PipelineResult {
+export interface IntermediateEncodeState {
   /**
    * bytes as a UCS-2 string, where every codepoint is in range [0, 255], and string#length is #bytes
    */
@@ -28,7 +30,7 @@ export interface PipelineResult {
   sha1?: string;
 }
 
-export type PipelineState = DeepReadonly<{
-  current: PipelineResult;
-  todo: PipeSpec[];
+export type EncodePipelineState = DeepReadonly<{
+  start: RawFile;
+  current: IntermediateEncodeState;
 }>;

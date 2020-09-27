@@ -1,10 +1,14 @@
 import React, { useMemo, useState } from 'react';
-import { InputData } from '../../core/types';
-import { PipelineResult, PipeSpec } from '../../core/model/pipe-spec';
-import { runPipeline } from "../../core/model/pipeline-runner";
+import { RawFile } from '../../core/model/types';
+import { IntermediateEncodeState, PipeSpec } from '../../core/model/encode-pipeline';
+import { runPipeline, startPipeline } from '../../core/model/encode-runner';
 
-export const EncoderOptions: React.FC<{ input: InputData; onFinish?(result: PipelineResult): void }> = (props) => {
-  const [pipeline, setPipeline] = useState<PipeSpec[]>([]);
+export const EncoderOptions: React.FC<{ input: RawFile; onFinish?(result: IntermediateEncodeState): void }> = (
+  props,
+) => {
+  const [todo, setTodo] = useState<readonly PipeSpec[]>([]);
 
-  const encoded = useMemo(() => runPipeline({current: props.input.inputBuffer}))
+  const encoded = useMemo(() => startPipeline(props.input, todo), [props.input, todo]);
+
+  return null;
 };

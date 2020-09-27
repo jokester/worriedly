@@ -1,11 +1,11 @@
 import React, { FunctionComponent, useMemo, useState } from 'react';
-import { DataFilters, InputData, QrOptions } from '../../core/types';
-import { encodeArrayBufferToString } from '../../core/web/encode-blob';
+import { DataFilters, RawFile, QrOptions } from '../../core/model/types';
+import { encodeArrayBufferToString } from '../../core/model/binary-conversion/conversion-es';
 import { CorrectionLevels, maxNumOfBytes } from '../../core/qr/create-qr';
 import { tailwindComponents } from '../tailwind-components';
 
 export const Step2OptionsPicker: FunctionComponent<{
-  inputData: InputData;
+  inputData: RawFile;
   onOptionsSet?(options: QrOptions): void;
   onBack?(): void;
 }> = (props) => {

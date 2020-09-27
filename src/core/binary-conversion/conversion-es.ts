@@ -1,7 +1,3 @@
-export function encodeBlobToString(blob: Blob): Promise<string> {
-  return readBlobAsArrayBuffer(blob).then(encodeArrayBufferToString);
-}
-
 export function encodeArrayBufferToString(arrayBuffer: ArrayBuffer): string {
   /**
    * encode bytes into JS UCS-2 string
@@ -14,18 +10,8 @@ export function encodeArrayBufferToString(arrayBuffer: ArrayBuffer): string {
 
 /**
  * TODO: move to ts-commonutils
- * @param blob
+ * @param str bytes encoded as UCS-2 codepoints
  */
-export async function readBlobAsArrayBuffer(blob: Blob): Promise<ArrayBuffer> {
-  const fr = new FileReader();
-
-  return new Promise<ArrayBuffer>((fulfill, reject) => {
-    fr.onload = (ev) => fulfill(fr.result as ArrayBuffer);
-    fr.onerror = fr.onabort = reject;
-    fr.readAsArrayBuffer(blob);
-  });
-}
-
 export function decodeStringToArrayBuffer(str: string): ArrayBuffer {
   const buf = new ArrayBuffer(str.length);
   const uint8View = new Uint8Array(buf);

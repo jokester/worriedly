@@ -1,10 +1,15 @@
-import { CorrectionLevels } from './qr/create-qr';
+import { CorrectionLevels } from '../qr/create-qr';
 
-export interface InputData {
+export interface RawFile {
   filename: string;
   inputBuffer: ArrayBuffer;
   contentType: string;
   sha1: string;
+}
+
+export interface RawQr {
+  bytes: string;
+  gifString: string;
 }
 
 export enum DataFilters {

@@ -1,15 +1,15 @@
 import { FunctionComponent } from 'react';
 import React, { useState } from 'react';
-import { readBlobAsArrayBuffer } from '../../core/web/encode-blob';
+import { readBlobAsArrayBuffer } from '../../core/model/binary-conversion/conversion-es';
 import { tailwindComponents } from '../tailwind-components';
-import { InputData } from '../../core/types';
+import { RawFile } from '../../core/model/types';
 import jsSha1 from 'js-sha1';
 
 export const Step1FilePicker: FunctionComponent<{
-  onSelected(x: InputData): void;
+  onSelected(x: RawFile): void;
 }> = (props) => {
   const [reading, setReading] = useState(false);
-  const [inputData, setInputData] = useState<null | InputData>(null);
+  const [inputData, setInputData] = useState<null | RawFile>(null);
 
   const onFileRead = async (f: File) => {
     if (f) {

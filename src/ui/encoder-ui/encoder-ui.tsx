@@ -3,15 +3,15 @@ import React, { useMemo, useState } from 'react';
 import './encoder-ui.scss';
 import { Step1FilePicker } from './step1-file-picker';
 import { EncoderSteps } from './encoder-steps';
-import { InputData, QrOptions } from '../../core/types';
+import { RawFile, QrOptions } from '../../core/model/types';
 import { Step2OptionsPicker } from './step2-options-picker';
 import { Step3PrintPreview } from './step3-print-preview';
-import { PipelineState } from '../../core/model/pipe-spec';
+import { EncodePipelineState } from '../../core/model/encode-pipeline';
 import { Never } from '@jokester/ts-commonutil/lib/concurrency/timing';
 import { usePromised } from '@jokester/ts-commonutil/lib/react/hook/use-promised';
 import { StepArrow, StepContainer, StepContent, StepDesc } from '../components/step-container';
 import { FilePicker } from '../components/file-picker';
-import { readBlobAsArrayBuffer } from '../../core/web/encode-blob';
+import { readBlobAsArrayBuffer } from '../../core/model/binary-conversion/conversion-es';
 import { getLogLevelLogger } from '@jokester/ts-commonutil/lib/logging/loglevel-logger';
 import jsSha1 from 'js-sha1';
 
@@ -20,7 +20,7 @@ const logger = getLogLevelLogger('encoder-ui', 'debug');
 export const EncoderUI2: React.FC = (props) => {
   const [inputFile, setInputFile] = useState<null | File>(null);
 
-  const inputDataP = useMemo<Promise<InputData>>(async (): Promise<InputData> => {
+  const inputDataP = useMemo<Promise<RawFile>>(async (): Promise<RawFile> => {
     if (!inputFile) return Never;
 
     const f = inputFile;
@@ -31,7 +31,7 @@ export const EncoderUI2: React.FC = (props) => {
 
   const [options, setOptions] = useState<null | QrOptions>(null);
 
-  const [encodedP, setEncodedP] = useState<Promise<PipelineState>>(Never);
+  const [encodedP, setEncodedP] = useState<Promise<EncodePipelineState>>(Never);
 
   const encoded = usePromised(encodedP);
 
@@ -61,7 +61,7 @@ export const EncoderUI2: React.FC = (props) => {
 
 export const EncoderUi: React.FC = (props) => {
   const [step, setStep] = useState(1);
-  const [inputData, setInputData] = useState<null | InputData>(null);
+  const [inputData, setInputData] = useState<null | RawFile>(null);
   const [options, setOptions] = useState<null | QrOptions>(null);
 
   return (
