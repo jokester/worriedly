@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button } from '@chakra-ui/core';
 import React from 'react';
 import { AppBanner } from './components/app-banner';
-import { EncoderUi, EncoderUI2 } from './encoder-ui/encoder-ui';
+import { EncoderMain } from './encoder-ui/encoder-ui';
 
 const ModeSelector: React.FC<{ onStartEncode?(): void; onStartDecode?(): void }> = (props) => {
   return (
@@ -27,7 +27,7 @@ export const Main: React.FC = () => {
       {mode === null && (
         <ModeSelector onStartEncode={() => setMode('encode')} onStartDecode={() => setMode('decode')} />
       )}
-      {mode === 'encode' && <EncoderUI2 />}
+      {mode === 'encode' && <EncoderMain />}
       {mode === 'decode' && null}
     </div>
   );

@@ -1,11 +1,7 @@
 import React, { useMemo, useState } from 'react';
 
 import './encoder-ui.scss';
-import { Step1FilePicker } from './step1-file-picker';
-import { EncoderSteps } from './encoder-steps';
 import { QrOptions } from '../../core/model/typed-deprecated';
-import { Step2OptionsPicker } from './step2-options-picker';
-import { Step3PrintPreview } from './step3-print-preview';
 import { Never } from '@jokester/ts-commonutil/lib/concurrency/timing';
 import { usePromised } from '@jokester/ts-commonutil/lib/react/hook/use-promised';
 import { StepArrow, StepContainer, StepContent, StepDesc } from '../components/step-container';
@@ -14,10 +10,11 @@ import { getLogLevelLogger } from '@jokester/ts-commonutil/lib/logging/loglevel-
 import jsSha1 from 'js-sha1';
 import { binaryConversion } from '../../core/binary-conversion';
 import { EncodedQr, RawFile } from '../../core/model/pipeline';
+import { EncoderOptions } from './encoder-options';
 
 const logger = getLogLevelLogger('encoder-ui', 'debug');
 
-export const EncoderUI2: React.FC = (props) => {
+export const EncoderMain: React.FC = (props) => {
   const [inputFile, setInputFile] = useState<null | File>(null);
 
   const inputDataP = useMemo<Promise<RawFile>>(async (): Promise<RawFile> => {
@@ -48,7 +45,7 @@ export const EncoderUI2: React.FC = (props) => {
       <StepArrow />
       <StepContainer>
         <StepDesc>2. Preview</StepDesc>
-        <StepContent></StepContent>
+        <StepContent>{inputData.fulfilled && <EncoderOptions input={inputData.value} />}</StepContent>
       </StepContainer>
       <StepArrow />
       <StepContainer>
@@ -56,46 +53,5 @@ export const EncoderUI2: React.FC = (props) => {
         <StepContent>TODO</StepContent>
       </StepContainer>
     </div>
-  );
-};
-
-export const EncoderUi: React.FC = (props) => {
-  const [step, setStep] = useState(1);
-  const [inputData, setInputData] = useState<null | RawFile>(null);
-  const [options, setOptions] = useState<null | QrOptions>(null);
-
-  return (
-    <>
-      <hr className="mb-2" />
-      <div className="unprintable">
-        <EncoderSteps step={step} />
-      </div>
-      <div className="h-full w-full encoder-ui flex-col">
-        {step === 1 && (
-          <Step1FilePicker
-            onSelected={(input) => {
-              setInputData(input);
-              setStep(2);
-            }}
-          />
-        )}
-
-        {step === 2 && inputData && (
-          <Step2OptionsPicker
-            inputData={inputData}
-            onOptionsSet={(o) => {
-              setStep(3);
-              setOptions(o);
-            }}
-            onBack={() => {
-              setOptions(null);
-              setStep(1);
-            }}
-          />
-        )}
-
-        {step === 3 && inputData && options && <Step3PrintPreview inputData={inputData} options={options} />}
-      </div>
-    </>
   );
 };
