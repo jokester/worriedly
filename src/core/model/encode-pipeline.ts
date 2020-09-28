@@ -34,6 +34,10 @@ export async function startPipeline(
   input: RawFile,
   todo: readonly PipeSpec[],
 ): Promise<Either<string, IntermediateEncodeState>> {
+  if (input.inputBuffer.byteLength > 100 * 1024) {
+    return either.left('File too big, a QR code can encode at most KBs of data.');
+  }
+
   const current = await binaryConversion.arrayBuffer.toString(input.inputBuffer);
 
   return runPipeline(

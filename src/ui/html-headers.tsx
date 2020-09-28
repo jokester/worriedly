@@ -6,6 +6,7 @@ export const HtmlHeader: FC = (props) => {
     <Helmet>
       <title>Worriedly</title>
 
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3.0, minimum-scale=0.9" />
       <link
         rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/tailwindcss@1.8.10/dist/tailwind.min.css"

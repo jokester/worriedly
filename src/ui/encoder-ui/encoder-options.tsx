@@ -1,11 +1,13 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { finishPipeline, startPipeline } from '../../core/model/encode-pipeline';
-import { EncodedQr, PipeSpec, RawFile } from '../../core/model/pipeline';
+import { EncodedQr, PipeSpec, PipeType, RawFile } from '../../core/model/pipeline';
 import { getLogLevelLogger } from '@jokester/ts-commonutil/lib/logging/loglevel-logger';
 import { NonEmptyArray } from 'fp-ts/NonEmptyArray';
 import { pipe } from 'fp-ts/function';
 import { CorrectionLevels, maxNumOfBytes } from '../../core/qr/create-qr';
 import { either } from 'fp-ts';
+import { FormControl, FormLabel, Select } from '@chakra-ui/core';
+import { usePromised } from '@jokester/ts-commonutil/lib/react/hook/use-promised';
 
 const logger = getLogLevelLogger(__filename, 'debug');
 
@@ -20,27 +22,27 @@ const encoderPresets: readonly EncoderPreset[] & NonEmptyArray<EncoderPreset> = 
     pipeline: [],
   },
   {
-    name: 'no processing -2',
-    pipeline: [],
+    name: 'gzip',
+    pipeline: [{ type: PipeType.compressGzip }],
   },
 ];
 
 const correctionLevels = [
   {
     name: 'L',
-    desc: `max ${maxNumOfBytes('L')} bytes`,
+    desc: `L: max ${maxNumOfBytes('L')} bytes`,
   },
   {
     name: 'M',
-    desc: `max ${maxNumOfBytes('M')} bytes`,
+    desc: `M: max ${maxNumOfBytes('M')} bytes`,
   },
   {
     name: 'Q',
-    desc: `max ${maxNumOfBytes('Q')} bytes`,
+    desc: `Q: max ${maxNumOfBytes('Q')} bytes`,
   },
   {
     name: 'H',
-    desc: `max ${maxNumOfBytes('H')} bytes`,
+    desc: `H: max ${maxNumOfBytes('H')} bytes`,
   },
 ] as const;
 
@@ -49,7 +51,7 @@ export const EncoderOptions: React.FC<{ input: RawFile; onFinish?(result: Encode
   const [level, setLevel] = useState<CorrectionLevels>('H');
 
   const encodedP = useMemo(() => startPipeline(props.input, preset.pipeline), [props.input, preset]);
-  // const encoded = usePromised(encodedP);
+  const encoded = usePromised(encodedP);
 
   useEffect(() => {
     startPipeline(props.input, preset.pipeline).then((result) => {
@@ -64,39 +66,35 @@ export const EncoderOptions: React.FC<{ input: RawFile; onFinish?(result: Encode
   }, [props.input, preset, level]);
 
   return (
-    <div>
-      <div>
-        <label>pipeline</label>
-        <select
-          value={preset.name}
-          onChange={(ev) => {
-            const found = encoderPresets.find((_) => _.name === ev.target.value);
-            found && setPreset(found);
-          }}
-        >
-          {encoderPresets.map((o, i) => (
-            <option value={o.name} key={i}>
-              {o.name}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div>
-        <label> QR Correction Level</label>
-        <select
-          value={level}
-          onChange={(ev) => {
-            const found = correctionLevels.find((_) => _.name === ev.target.value);
-            found && setLevel(found.name);
-          }}
-        >
-          {correctionLevels.map((o, i) => (
-            <option value={o.name} key={i}>
-              {o.desc}
-            </option>
-          ))}
-        </select>
-      </div>
-    </div>
+    <FormControl>
+      <FormLabel>Preset</FormLabel>
+      <Select
+        value={preset.name}
+        onChange={(ev) => {
+          const found = encoderPresets.find((_) => _.name === ev.target.value);
+          found && setPreset(found);
+        }}
+      >
+        {encoderPresets.map((o, i) => (
+          <option value={o.name} key={i}>
+            {o.name}
+          </option>
+        ))}
+      </Select>
+      <FormLabel>QR Correction Level</FormLabel>
+      <Select
+        value={level}
+        onChange={(ev) => {
+          const found = correctionLevels.find((_) => _.name === ev.target.value);
+          found && setLevel(found.name);
+        }}
+      >
+        {correctionLevels.map((o, i) => (
+          <option value={o.name} key={i}>
+            {o.desc}
+          </option>
+        ))}
+      </Select>
+    </FormControl>
   );
 };

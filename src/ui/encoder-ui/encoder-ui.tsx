@@ -11,6 +11,8 @@ import jsSha1 from 'js-sha1';
 import { binaryConversion } from '../../core/binary-conversion';
 import { EncodedQr, RawFile } from '../../core/model/pipeline';
 import { EncoderOptions } from './encoder-options';
+import { RawFilePreview } from '../components/raw-file-overview';
+import { Collapse } from '@chakra-ui/core';
 
 const logger = getLogLevelLogger('encoder-ui', 'debug');
 
@@ -24,6 +26,7 @@ export const EncoderMain: React.FC = (props) => {
     const read = await binaryConversion.blob.toArrayBuffer(f);
     return { filename: f.name, inputBuffer: read, contentType: f.type, sha1: jsSha1(read) };
   }, [inputFile]);
+
   const inputData = usePromised(inputDataP);
 
   const [options, setOptions] = useState<null | QrOptions>(null);
@@ -39,7 +42,14 @@ export const EncoderMain: React.FC = (props) => {
       <StepContainer>
         <StepDesc>1. Pick a file</StepDesc>
         <StepContent>
-          <FilePicker onFile={setInputFile} />
+          <Collapse isOpen={!inputFile}>
+            <div className="flex justify-center">
+              <FilePicker onFile={setInputFile} />
+            </div>
+          </Collapse>
+          <Collapse isOpen={!!inputFile}>
+            <RawFilePreview file={(inputData.fulfilled && inputData.value) || null} />
+          </Collapse>
         </StepContent>
       </StepContainer>
       <StepArrow />

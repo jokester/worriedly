@@ -4,9 +4,9 @@ import React, { useMemo } from 'react';
 import { createQR } from '../../core/qr/create-qr';
 import { tailwindComponents } from '../tailwind-components';
 import { createAspectRatioStyle } from '../aspect-ratio/aspect-ratio';
-import { RawFile } from "../../core/model/pipeline";
+import { RawFile } from '../../core/model/pipeline';
 
-export const Step3PrintPreview: FunctionComponent<{ inputData: RawFile; options: QrOptions }> = props => {
+export const Step3PrintPreview: FunctionComponent<{ inputData: RawFile; options: QrOptions }> = (props) => {
   const encodedQr = useMemo(() => createQR(props.options.filteredBytes, props.options.errorCorrectionLevel), [
     props.options.filteredBytes,
     props.options.errorCorrectionLevel,
