@@ -13,6 +13,9 @@ import { EncodedQr, RawFile } from '../../core/model/pipeline';
 import { EncoderOptions } from './encoder-options';
 import { RawFilePreview } from '../components/raw-file-overview';
 import { Collapse } from '@chakra-ui/core';
+import { Either } from 'fp-ts/Either';
+import { either } from 'fp-ts';
+import { pipe } from 'fp-ts/function';
 
 const logger = getLogLevelLogger('encoder-ui', 'debug');
 
@@ -31,9 +34,7 @@ export const EncoderMain: React.FC = (props) => {
 
   const [options, setOptions] = useState<null | QrOptions>(null);
 
-  const [encodedP, setEncodedP] = useState<Promise<EncodedQr>>(Never);
-
-  const encoded = usePromised(encodedP);
+  const [encoded, setEncoded] = useState<Either<string, EncodedQr>>(either.left(''));
 
   logger.debug('EncoderUI2', inputFile, inputData, options);
 
@@ -48,19 +49,39 @@ export const EncoderMain: React.FC = (props) => {
             </div>
           </Collapse>
           <Collapse isOpen={!!inputFile}>
-            <RawFilePreview file={(inputData.fulfilled && inputData.value) || null} />
+            <RawFilePreview
+              file={
+                (inputData.fulfilled && {
+                  filename: inputData.value.filename,
+                  contentType: inputData.value.contentType,
+                  size: inputData.value.inputBuffer.byteLength,
+                  sha1: inputData.value.sha1,
+                }) ||
+                undefined
+              }
+            />
           </Collapse>
         </StepContent>
       </StepContainer>
       <StepArrow />
       <StepContainer>
         <StepDesc>2. Preview</StepDesc>
-        <StepContent>{inputData.fulfilled && <EncoderOptions input={inputData.value} />}</StepContent>
+        <StepContent>
+          {inputData.fulfilled && <EncoderOptions input={inputData.value} onEncoded={setEncoded} />}
+        </StepContent>
       </StepContainer>
       <StepArrow />
       <StepContainer>
         <StepDesc>3. Print</StepDesc>
-        <StepContent>TODO</StepContent>
+        <StepContent>
+          {pipe(
+            encoded,
+            either.fold(
+              (l) => l && `Error: ${l}`,
+              (r) => 'qr',
+            ),
+          )}
+        </StepContent>
       </StepContainer>
     </div>
   );

@@ -7,6 +7,8 @@ import { pipe } from 'fp-ts/function';
 import { CorrectionLevels, maxNumOfBytes } from '../../core/qr/create-qr';
 import { either } from 'fp-ts';
 import { FormControl, FormLabel, Select } from '@chakra-ui/core';
+import { Either } from 'fp-ts/Either';
+import { RawFilePreview } from '../components/raw-file-overview';
 import { usePromised } from '@jokester/ts-commonutil/lib/react/hook/use-promised';
 
 const logger = getLogLevelLogger(__filename, 'debug');
@@ -46,12 +48,34 @@ const correctionLevels = [
   },
 ] as const;
 
-export const EncoderOptions: React.FC<{ input: RawFile; onFinish?(result: EncodedQr): void }> = (props) => {
+async function transformFile(
+  f: RawFile,
+  preset: EncoderPreset,
+  level: CorrectionLevels,
+): Promise<Either<string, EncodedQr>> {
+  const transformed = await startPipeline(f, preset.pipeline);
+  return pipe(
+    transformed,
+    either.map((right) => finishPipeline(right, level)),
+    either.flatten,
+  );
+}
+
+export const EncoderOptions: React.FC<{ input: RawFile; onEncoded?(result: Either<string, EncodedQr>): void }> = (
+  props,
+) => {
   const [preset, setPreset] = useState<EncoderPreset>(encoderPresets[0]);
   const [level, setLevel] = useState<CorrectionLevels>('H');
 
-  const encodedP = useMemo(() => startPipeline(props.input, preset.pipeline), [props.input, preset]);
+  const encodedP = useMemo(() => transformFile(props.input, preset, level), [props.input, preset, level]);
+
   const encoded = usePromised(encodedP);
+
+  useEffect(() => {
+    if (encoded.fulfilled) {
+      props.onEncoded?.(encoded.value);
+    }
+  }, [encoded]);
 
   useEffect(() => {
     startPipeline(props.input, preset.pipeline).then((result) => {
@@ -62,6 +86,8 @@ export const EncoderOptions: React.FC<{ input: RawFile; onFinish?(result: Encode
       );
       logger.debug('EncodedOptions#pipeline result', result);
       logger.debug('EncodedOptions#final result', finalResult);
+
+      props.onEncoded?.(finalResult);
     });
   }, [props.input, preset, level]);
 
@@ -95,6 +121,23 @@ export const EncoderOptions: React.FC<{ input: RawFile; onFinish?(result: Encode
           </option>
         ))}
       </Select>
+      {encoded.fulfilled &&
+        (pipe(
+          encoded.value,
+          either.fold<string, EncodedQr, string | React.ReactElement>(
+            (l) => l && `Error: ${l}`,
+            (r) => (
+              <RawFilePreview
+                file={{
+                  filename: props.input.filename,
+                  contentType: props.input.contentType,
+                  size: r.bytes.length,
+                  sha1: r.sha1,
+                }}
+              />
+            ),
+          ),
+        ) as string)}
     </FormControl>
   );
 };
