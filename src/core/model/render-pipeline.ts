@@ -1,4 +1,5 @@
 import qrcode from 'qrcode-generator';
+import { EncodedFile, RenderedFile } from './pipeline';
 
 export type CorrectionLevels = 'H' | 'Q' | 'M' | 'L';
 
@@ -7,7 +8,14 @@ export interface QrRendition {
   readonly gifDataUri: string;
 }
 
-export function createQR(encodedBytes: string, errorCorrectionLevel: CorrectionLevels): QrRendition {
+export function createQR(encoded: EncodedFile, level: CorrectionLevels): RenderedFile {
+  return {
+    ...encoded,
+    rendered: renderQr(encoded.encoded.bytes, level),
+  };
+}
+
+function renderQr(encodedBytes: string, errorCorrectionLevel: CorrectionLevels): QrRendition {
   throwIfLengthExceeded(errorCorrectionLevel, encodedBytes.length);
 
   const qr = qrcode(0, errorCorrectionLevel);

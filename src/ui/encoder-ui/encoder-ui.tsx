@@ -5,15 +5,17 @@ import { usePromised } from '@jokester/ts-commonutil/lib/react/hook/use-promised
 import { getLogLevelLogger } from '@jokester/ts-commonutil/lib/logging/loglevel-logger';
 import jsSha1 from 'js-sha1';
 import { binaryConversion } from '../../core/binary-conversion';
-import { RawFile } from '../../core/model/pipeline';
+import { RawFile, RenderedFile } from '../../core/model/pipeline';
 import { Button, FormControl, FormLabel, Input, Radio, RadioGroup } from '@chakra-ui/core';
 import { either } from 'fp-ts';
 import { paperGrids } from '../components/paper/paper-frame';
 import classNames from 'classnames';
-import { correctionLevels, encoderPresets, transformFile } from './encoder-options';
+import { correctionLevels, encoderPresets } from './encoder-options';
 import { useClippedIndex } from '../components/hooks/use-clipped';
-import { pipe } from 'fp-ts/lib/function';
 import { FAIcon } from '../components/font-awesome-icon';
+import { encodeFile } from '../../core/model/encode-pipeline';
+import { createQR, QrRendition } from '../../core/model/render-pipeline';
+import { pipe } from 'fp-ts/lib/function';
 
 const logger = getLogLevelLogger('encoder-ui', 'debug');
 
@@ -22,7 +24,14 @@ export const EncoderMain: React.FC<{ inputFile: File }> = (props) => {
 
   const inputReadP = useMemo<Promise<RawFile>>(async (): Promise<RawFile> => {
     const read = await binaryConversion.blob.toArrayBuffer(inputFile);
-    return { filename: inputFile.name, inputBuffer: read, contentType: inputFile.type, sha1: jsSha1(read) };
+    return {
+      filename: inputFile.name,
+      contentType: inputFile.type,
+      raw: {
+        inputBuffer: read,
+        sha1: jsSha1(read),
+      },
+    };
   }, [inputFile]);
 
   const inputRead = usePromised(inputReadP);
@@ -33,15 +42,21 @@ export const EncoderMain: React.FC<{ inputFile: File }> = (props) => {
   const preset = encoderPresets[presetIndex];
   const level = correctionLevels[levelIndex];
 
-  const encodedP = useMemo(() => inputReadP.then((read) => transformFile(read, preset, level.name)), [
+  const encodedP = useMemo(() => inputReadP.then((read) => encodeFile(read, preset, level.name)), [
     inputRead,
     preset,
     level,
   ]);
   const encoded = usePromised(encodedP);
 
+  const [rendered, setRendered] = useState<null | RenderedFile>(null);
+
   logger.debug('inputRead', inputRead);
   logger.debug('encoded', encoded);
+
+  if (rendered) {
+    return <RendererView rendition={rendered} />;
+  }
 
   return (
     <div className={classNames(paperGrids.allCells, 'px-4')}>
@@ -75,7 +90,10 @@ export const EncoderMain: React.FC<{ inputFile: File }> = (props) => {
       <hr className="mt-6" />
 
       <div>
-        <h2 className="py-6 text-xl text-center">Preview</h2>
+        <h2 className="py-6 text-xl text-center">
+          <FAIcon icon="file" className="mr-2" />
+          Preview
+        </h2>
         <FormControl>
           <FormLabel className="text-sm">Filename</FormLabel>
           <Input size="sm" value={inputFile.name} isReadOnly />
@@ -87,7 +105,7 @@ export const EncoderMain: React.FC<{ inputFile: File }> = (props) => {
           <Input
             size="sm"
             className="text-xs"
-            value={(inputRead.fulfilled && inputRead.value.sha1) || 'computing...'}
+            value={(inputRead.fulfilled && inputRead.value.raw.sha1) || 'computing...'}
             isReadOnly
           />
         </FormControl>
@@ -101,16 +119,40 @@ export const EncoderMain: React.FC<{ inputFile: File }> = (props) => {
             </Button>
           </div>
         )}
+
         {encoded.fulfilled && (
           <div>
-            <Button isFullWidth isDisabled={either.isLeft(encoded.value)} variant="solid">
-              Continue
-            </Button>
+            {pipe(
+              encoded.value,
 
-            {either.isLeft(encoded.value) && <p className="mt-4 text-red-600">Error: {encoded.value.left}</p>}
+              either.fold(
+                (l) => (
+                  <>
+                    <Button isFullWidth isDisabled variant="solid">
+                      Continue
+                    </Button>
+                    <p className="mt-4 text-red-600">Error: {l}</p>
+                  </>
+                ),
+                (r) => (
+                  <Button isFullWidth variant="solid" onClick={() => setRendered(createQR(r, level.name))}>
+                    Continue
+                  </Button>
+                ),
+              ),
+            )}
           </div>
         )}
       </div>
     </div>
+  );
+};
+
+const RendererView: React.FC<{ rendition: RenderedFile }> = (props) => {
+  return (
+    <>
+      <div className={classNames(paperGrids.controlCell)}>todo</div>
+      <div className={classNames(paperGrids.resultCell)}>todo2</div>
+    </>
   );
 };

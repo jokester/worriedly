@@ -1,6 +1,6 @@
 import { ArgumentParser } from 'argparse';
 import { encodeBuffer } from '../core/node/creating-qr';
-import { createQR } from '../core/qr/create-qr';
+import { renderPipeline } from '../core/model/render-pipeline';
 import { getWinstonLogger } from '@jokester/ts-commonutil/lib/logging/winston-logger';
 import { fsp, readStream } from '@jokester/ts-commonutil/lib/node';
 
@@ -74,7 +74,7 @@ async function worriedlyPrintQrMain(options: PrintQrOptions) {
   logger.info('got %o', inputBytes);
 
   const outputFormat = inferOutputFormat(options.outputFormat, options.outputFile);
-  const { moduleCount, gifDataUri } = await createQR(encodeBuffer(inputBytes), 'H');
+  const { moduleCount, gifDataUri } = await renderPipeline(encodeBuffer(inputBytes), 'H');
 
   logger.info('genereated moduleCount=%d', moduleCount);
   logger.info('generated data uri of %d chars', gifDataUri.length);

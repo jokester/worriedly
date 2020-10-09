@@ -1,54 +1,73 @@
-import { EncodedQr, PipeSpec, RawFile } from './pipeline';
+import { EncodedFile, PipeSpec, RawFile } from './pipeline';
 import { Either } from 'fp-ts/Either';
 import { binaryConversion } from '../binary-conversion';
 import { either } from 'fp-ts';
 import { eitherChain } from '../../utils/fp-ts/either-chain';
-import { CorrectionLevels, createQR, maxNumOfBytes } from '../qr/create-qr';
+import { CorrectionLevels, maxNumOfBytes } from './render-pipeline';
 import jsSha1 from 'js-sha1';
+import { pipe } from 'fp-ts/function';
+import { EncoderPreset } from '../../ui/encoder-ui/encoder-options';
+
+export async function encodeFile(
+  raw: RawFile,
+  preset: EncoderPreset,
+  level: CorrectionLevels,
+): Promise<Either<string, EncodedFile>> {
+  const transformed = await startEncodePipeline(raw, preset.pipeline);
+  return pipe(
+    transformed,
+    either.map((right) => finishEncoderPipeline(raw, right, level)),
+    either.flatten,
+  );
+}
 
 interface IntermediateEncodeState {
   bytes: string;
 }
 
-export function finishPipeline(
-  pipelineResult: IntermediateEncodeState,
+function finishEncoderPipeline(
+  raw: RawFile,
+  lastEncodeResult: IntermediateEncodeState,
   correctionLevel: CorrectionLevels,
-): Either<string, EncodedQr> {
+): Either<string, EncodedFile> {
   const maxLen = maxNumOfBytes(correctionLevel);
 
-  if (pipelineResult.bytes.length > maxLen) {
+  if (lastEncodeResult.bytes.length > maxLen) {
     return either.left(
-      `Correction level "${correctionLevel}" can encode at most ${maxLen.toLocaleString()} bytes. You had ${pipelineResult.bytes.length.toLocaleString()}.`,
+      `Correction level "${correctionLevel}" can encode at most ${maxLen.toLocaleString()} bytes. You had ${lastEncodeResult.bytes.length.toLocaleString()}.`,
     );
   }
 
-  return either.right<never, EncodedQr>({
-    bytes: pipelineResult.bytes,
-    sha1: jsSha1(binaryConversion.string.toArrayBuffer(pipelineResult.bytes)),
+  return either.right<never, EncodedFile>({
+    ...raw,
+    encoded: {
+      bytes: lastEncodeResult.bytes,
+      sha1: jsSha1(binaryConversion.string.toArrayBuffer(lastEncodeResult.bytes)),
+    },
   });
 }
 
-export async function startPipeline(
+async function startEncodePipeline(
   input: RawFile,
   todo: readonly PipeSpec[],
 ): Promise<Either<string, IntermediateEncodeState>> {
-  if (input.inputBuffer.byteLength > 100 * 1024) {
+  if (input.raw.inputBuffer.byteLength > 100 * 1024) {
     return either.left('File too big, a QR code can encode at most KBs of data.');
   }
 
-  const current = await binaryConversion.arrayBuffer.toString(input.inputBuffer);
+  const current = binaryConversion.arrayBuffer.toString(input.raw.inputBuffer);
 
   return runPipeline(
     {
       bytes: current,
     },
-    todo as PipeSpec[],
+    todo,
   );
 }
 
 async function runPipeline(
   s: IntermediateEncodeState,
-  todo: PipeSpec[],
+  todo: readonly PipeSpec[],
 ): Promise<Either<string, IntermediateEncodeState>> {
   if (!todo.length) {
     return either.right(s);
@@ -66,5 +85,3 @@ async function runStep(
 ): Promise<Either<string, IntermediateEncodeState>> {
   return either.left('todo');
 }
-
-async function encodeQr(i: IntermediateEncodeState) {}

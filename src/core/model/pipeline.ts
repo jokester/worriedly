@@ -1,4 +1,5 @@
-import { QrRendition } from '../qr/create-qr';
+import { QrRendition } from './render-pipeline';
+import { EncoderPreset } from '../../ui/encoder-ui/encoder-options';
 
 export enum PipeType {
   readBytes,
@@ -22,26 +23,21 @@ export interface PipeSpec {
 
 export interface RawFile {
   filename: string;
-  inputBuffer: ArrayBuffer;
   contentType: string;
-  sha1: string;
+  raw: {
+    inputBuffer: ArrayBuffer;
+    sha1: string;
+  };
 }
 
-export interface EncodedQr {
-  bytes: string;
-  sha1: string;
+export interface EncodedFile extends RawFile {
+  // encodePreset: EncoderPreset;
+  encoded: {
+    bytes: string;
+    sha1: string;
+  };
 }
 
-export interface RenderedQR extends EncodedQr {
-  rendition: QrRendition;
-}
-
-export interface RawQr {
-  bytes: string;
-}
-
-export interface DecodedFile {
-  filename: string;
-
-  sha1: string;
+export interface RenderedFile extends EncodedFile {
+  rendered: QrRendition;
 }

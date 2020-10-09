@@ -1,4 +1,4 @@
-import { CorrectionLevels } from '../qr/create-qr';
+import { CorrectionLevels } from './render-pipeline';
 
 /**
  * @deprecated
