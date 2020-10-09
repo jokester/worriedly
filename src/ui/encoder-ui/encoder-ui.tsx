@@ -1,88 +1,116 @@
 import React, { useMemo, useState } from 'react';
 
 import './encoder-ui.scss';
-import { QrOptions } from '../../core/model/typed-deprecated';
-import { Never } from '@jokester/ts-commonutil/lib/concurrency/timing';
 import { usePromised } from '@jokester/ts-commonutil/lib/react/hook/use-promised';
-import { StepArrow, StepContainer, StepContent, StepDesc } from '../components/step-container';
-import { FilePicker } from '../components/file-picker';
 import { getLogLevelLogger } from '@jokester/ts-commonutil/lib/logging/loglevel-logger';
 import jsSha1 from 'js-sha1';
 import { binaryConversion } from '../../core/binary-conversion';
-import { EncodedQr, RawFile } from '../../core/model/pipeline';
-import { EncoderOptions } from './encoder-options';
-import { RawFilePreview } from '../components/raw-file-overview';
-import { Collapse } from '@chakra-ui/core';
-import { Either } from 'fp-ts/Either';
+import { RawFile } from '../../core/model/pipeline';
+import { Button, FormControl, FormLabel, Input, Radio, RadioGroup } from '@chakra-ui/core';
 import { either } from 'fp-ts';
-import { pipe } from 'fp-ts/function';
+import { paperGrids } from '../components/paper/paper-frame';
+import classNames from 'classnames';
+import { correctionLevels, encoderPresets, transformFile } from './encoder-options';
+import { useClippedIndex } from '../components/hooks/use-clipped';
+import { pipe } from 'fp-ts/lib/function';
+import { FAIcon } from '../components/font-awesome-icon';
 
 const logger = getLogLevelLogger('encoder-ui', 'debug');
 
-export const EncoderMain: React.FC = (props) => {
-  const [inputFile, setInputFile] = useState<null | File>(null);
+export const EncoderMain: React.FC<{ inputFile: File }> = (props) => {
+  const { inputFile } = props;
 
-  const inputDataP = useMemo<Promise<RawFile>>(async (): Promise<RawFile> => {
-    if (!inputFile) return Never;
-
-    const f = inputFile;
-    const read = await binaryConversion.blob.toArrayBuffer(f);
-    return { filename: f.name, inputBuffer: read, contentType: f.type, sha1: jsSha1(read) };
+  const inputReadP = useMemo<Promise<RawFile>>(async (): Promise<RawFile> => {
+    const read = await binaryConversion.blob.toArrayBuffer(inputFile);
+    return { filename: inputFile.name, inputBuffer: read, contentType: inputFile.type, sha1: jsSha1(read) };
   }, [inputFile]);
 
-  const inputData = usePromised(inputDataP);
+  const inputRead = usePromised(inputReadP);
 
-  const [options, setOptions] = useState<null | QrOptions>(null);
+  const [presetIndex, setPresetIndex] = useClippedIndex(encoderPresets);
+  const [levelIndex, setLevelIndex] = useClippedIndex(correctionLevels);
 
-  const [encoded, setEncoded] = useState<Either<string, EncodedQr>>(either.left(''));
+  const preset = encoderPresets[presetIndex];
+  const level = correctionLevels[levelIndex];
 
-  logger.debug('EncoderUI2', inputFile, inputData, options);
+  const encodedP = useMemo(() => inputReadP.then((read) => transformFile(read, preset, level.name)), [
+    inputRead,
+    preset,
+    level,
+  ]);
+  const encoded = usePromised(encodedP);
+
+  logger.debug('inputRead', inputRead);
+  logger.debug('encoded', encoded);
 
   return (
-    <div>
-      <StepContainer>
-        <StepDesc>1. Pick a file</StepDesc>
-        <StepContent>
-          <Collapse isOpen={!inputFile}>
-            <div className="flex justify-center">
-              <FilePicker onFile={setInputFile} />
-            </div>
-          </Collapse>
-          <Collapse isOpen={!!inputFile}>
-            <RawFilePreview
-              file={
-                (inputData.fulfilled && {
-                  filename: inputData.value.filename,
-                  contentType: inputData.value.contentType,
-                  size: inputData.value.inputBuffer.byteLength,
-                  sha1: inputData.value.sha1,
-                }) ||
-                undefined
-              }
-            />
-          </Collapse>
-        </StepContent>
-      </StepContainer>
-      <StepArrow />
-      <StepContainer>
-        <StepDesc>2. Preview</StepDesc>
-        <StepContent>
-          {inputData.fulfilled && <EncoderOptions input={inputData.value} onEncoded={setEncoded} />}
-        </StepContent>
-      </StepContainer>
-      <StepArrow />
-      <StepContainer>
-        <StepDesc>3. Print</StepDesc>
-        <StepContent>
-          {pipe(
-            encoded,
-            either.fold(
-              (l) => l && `Error: ${l}`,
-              (r) => 'qr',
-            ),
-          )}
-        </StepContent>
-      </StepContainer>
+    <div className={classNames(paperGrids.allCells, 'px-4')}>
+      <h2 className="py-6 text-xl text-center">
+        <FAIcon icon="cog" className="mr-2" />
+        Settings
+      </h2>
+      <div className="flex ">
+        <FormControl className="w-1/2">
+          <FormLabel className="text-sm">Encode Preset </FormLabel>
+          <RadioGroup value={presetIndex} onChange={(ev) => setPresetIndex(Number(ev.target.value))}>
+            {encoderPresets.map((preset, i) => (
+              <Radio key={i} value={i} size="sm">
+                {preset.name}
+              </Radio>
+            ))}
+          </RadioGroup>
+        </FormControl>
+
+        <FormControl className="w-1/2">
+          <FormLabel className="text-sm">QR Code Correlation Level</FormLabel>
+          <RadioGroup value={levelIndex} onChange={(ev) => setLevelIndex(Number(ev.target.value))}>
+            {correctionLevels.map((l, i) => (
+              <Radio key={i} value={i} size="sm">
+                {l.desc}
+              </Radio>
+            ))}
+          </RadioGroup>
+        </FormControl>
+      </div>
+      <hr className="mt-6" />
+
+      <div>
+        <h2 className="py-6 text-xl text-center">Preview</h2>
+        <FormControl>
+          <FormLabel className="text-sm">Filename</FormLabel>
+          <Input size="sm" value={inputFile.name} isReadOnly />
+          <FormLabel className="text-sm">Content Type</FormLabel>
+          <Input size="sm" value={inputFile.type} isReadOnly />
+          <FormLabel className="text-sm">Original Size</FormLabel>
+          <Input size="sm" value={`${inputFile.size.toLocaleString()} bytes`} isReadOnly />
+          <FormLabel className="text-sm">Original SHA1</FormLabel>
+          <Input
+            size="sm"
+            className="text-xs"
+            value={(inputRead.fulfilled && inputRead.value.sha1) || 'computing...'}
+            isReadOnly
+          />
+        </FormControl>
+      </div>
+      <hr className="my-6" />
+      <div>
+        {encoded.pending && (
+          <div className="text-center">
+            <Button isFullWidth isLoading variantColor="blue">
+              Continue
+            </Button>
+          </div>
+        )}
+        {encoded.fulfilled && (
+          <div>
+            <Button isFullWidth isDisabled={either.isLeft(encoded.value)} variant="solid">
+              Continue
+            </Button>
+
+            {either.isLeft(encoded.value) && <p className="mt-4 text-red-600">Error: {encoded.value.left}</p>}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

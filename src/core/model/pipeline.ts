@@ -30,7 +30,9 @@ export interface RawFile {
 export interface EncodedQr {
   bytes: string;
   sha1: string;
+}
 
+export interface RenderedQR extends EncodedQr {
   rendition: QrRendition;
 }
 

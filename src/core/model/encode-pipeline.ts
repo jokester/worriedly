@@ -18,13 +18,11 @@ export function finishPipeline(
 
   if (pipelineResult.bytes.length > maxLen) {
     return either.left(
-      `Correction level "${correctionLevel}" can encode at most ${maxLen} bytes. You had ${pipelineResult.bytes.length}.`,
+      `Correction level "${correctionLevel}" can encode at most ${maxLen.toLocaleString()} bytes. You had ${pipelineResult.bytes.length.toLocaleString()}.`,
     );
   }
-  const rendition = createQR(pipelineResult.bytes, correctionLevel);
 
   return either.right<never, EncodedQr>({
-    rendition,
     bytes: pipelineResult.bytes,
     sha1: jsSha1(binaryConversion.string.toArrayBuffer(pipelineResult.bytes)),
   });

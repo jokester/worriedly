@@ -8,47 +8,56 @@ import { CorrectionLevels, maxNumOfBytes } from '../../core/qr/create-qr';
 import { either } from 'fp-ts';
 import { FormControl, FormLabel, Select } from '@chakra-ui/core';
 import { Either } from 'fp-ts/Either';
-import { RawFilePreview } from '../components/raw-file-overview';
 import { usePromised } from '@jokester/ts-commonutil/lib/react/hook/use-promised';
 
 const logger = getLogLevelLogger(__filename, 'debug');
 
+const encoderPresetSlugs = {
+
+  none: 'none',
+
+
+} as const;
+
 interface EncoderPreset {
   name: string;
+  slug: string;
   pipeline: PipeSpec[];
 }
 
-const encoderPresets: readonly EncoderPreset[] & NonEmptyArray<EncoderPreset> = [
+export const encoderPresets: readonly EncoderPreset[] & NonEmptyArray<EncoderPreset> = [
   {
-    name: 'no processing',
+    name: 'do not encode',
+    slug: 'none',
     pipeline: [],
   },
   {
-    name: 'gzip',
+    name: 'gzip (TODO)',
+    slug: 'gzip',
     pipeline: [{ type: PipeType.compressGzip }],
   },
 ];
 
-const correctionLevels = [
+export const correctionLevels = [
   {
     name: 'L',
-    desc: `L: max ${maxNumOfBytes('L')} bytes`,
+    desc: `L: up to ${maxNumOfBytes('L').toLocaleString()} bytes`,
   },
   {
     name: 'M',
-    desc: `M: max ${maxNumOfBytes('M')} bytes`,
+    desc: `M: up to ${maxNumOfBytes('M').toLocaleString()} bytes`,
   },
   {
     name: 'Q',
-    desc: `Q: max ${maxNumOfBytes('Q')} bytes`,
+    desc: `Q: up to ${maxNumOfBytes('Q').toLocaleString()} bytes`,
   },
   {
     name: 'H',
-    desc: `H: max ${maxNumOfBytes('H')} bytes`,
+    desc: `H: up to ${maxNumOfBytes('H').toLocaleString()} bytes`,
   },
 ] as const;
 
-async function transformFile(
+export async function transformFile(
   f: RawFile,
   preset: EncoderPreset,
   level: CorrectionLevels,
@@ -60,84 +69,3 @@ async function transformFile(
     either.flatten,
   );
 }
-
-export const EncoderOptions: React.FC<{ input: RawFile; onEncoded?(result: Either<string, EncodedQr>): void }> = (
-  props,
-) => {
-  const [preset, setPreset] = useState<EncoderPreset>(encoderPresets[0]);
-  const [level, setLevel] = useState<CorrectionLevels>('H');
-
-  const encodedP = useMemo(() => transformFile(props.input, preset, level), [props.input, preset, level]);
-
-  const encoded = usePromised(encodedP);
-
-  useEffect(() => {
-    if (encoded.fulfilled) {
-      props.onEncoded?.(encoded.value);
-    }
-  }, [encoded]);
-
-  useEffect(() => {
-    startPipeline(props.input, preset.pipeline).then((result) => {
-      const finalResult = pipe(
-        result,
-        either.map((right) => finishPipeline(right, level)),
-        either.flatten,
-      );
-      logger.debug('EncodedOptions#pipeline result', result);
-      logger.debug('EncodedOptions#final result', finalResult);
-
-      props.onEncoded?.(finalResult);
-    });
-  }, [props.input, preset, level]);
-
-  return (
-    <FormControl>
-      <FormLabel>Preset</FormLabel>
-      <Select
-        value={preset.name}
-        onChange={(ev) => {
-          const found = encoderPresets.find((_) => _.name === ev.target.value);
-          found && setPreset(found);
-        }}
-      >
-        {encoderPresets.map((o, i) => (
-          <option value={o.name} key={i}>
-            {o.name}
-          </option>
-        ))}
-      </Select>
-      <FormLabel>QR Correction Level</FormLabel>
-      <Select
-        value={level}
-        onChange={(ev) => {
-          const found = correctionLevels.find((_) => _.name === ev.target.value);
-          found && setLevel(found.name);
-        }}
-      >
-        {correctionLevels.map((o, i) => (
-          <option value={o.name} key={i}>
-            {o.desc}
-          </option>
-        ))}
-      </Select>
-      {encoded.fulfilled &&
-        (pipe(
-          encoded.value,
-          either.fold<string, EncodedQr, string | React.ReactElement>(
-            (l) => l && `Error: ${l}`,
-            (r) => (
-              <RawFilePreview
-                file={{
-                  filename: props.input.filename,
-                  contentType: props.input.contentType,
-                  size: r.bytes.length,
-                  sha1: r.sha1,
-                }}
-              />
-            ),
-          ),
-        ) as string)}
-    </FormControl>
-  );
-};

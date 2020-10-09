@@ -11,11 +11,17 @@ export const FAIcon: React.FC<{
   size?: 'lg' | '2x' | '3x' | '4x' | '5x';
   fw?: boolean;
   spin?: boolean;
+  className?: string;
 }> = (props) => (
   <i
-    className={classNames(`fa fa-${props.icon}`, props.size ? `fa-${props.size}` : '', {
-      'fa-fw': props.fw,
-      'fa-spin': props.spin,
-    })}
+    className={classNames(
+      `fa fa-${props.icon}`,
+      props.size ? `fa-${props.size}` : '',
+      {
+        'fa-fw': props.fw,
+        'fa-spin': props.spin,
+      },
+      props.className,
+    )}
   />
 );
