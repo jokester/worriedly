@@ -15,7 +15,7 @@ export function createQR(encoded: EncodedFile, level: CorrectionLevels): Rendere
   };
 }
 
-function renderQr(encodedBytes: string, errorCorrectionLevel: CorrectionLevels): QrRendition {
+export function renderQr(encodedBytes: string, errorCorrectionLevel: CorrectionLevels): QrRendition {
   throwIfLengthExceeded(errorCorrectionLevel, encodedBytes.length);
 
   const qr = qrcode(0, errorCorrectionLevel);

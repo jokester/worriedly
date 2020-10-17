@@ -17,8 +17,6 @@ export enum PipeType {
 
 export interface PipeSpec {
   type: PipeType;
-
-  qrLevel?: 'H';
 }
 
 export interface RawFile {
