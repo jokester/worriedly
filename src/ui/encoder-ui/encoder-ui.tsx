@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 
-import './encoder-ui.scss';
+import style from './encoder-ui.module.scss';
 import { usePromised } from '@jokester/ts-commonutil/lib/react/hook/use-promised';
 import { getLogLevelLogger } from '@jokester/ts-commonutil/lib/logging/loglevel-logger';
 import jsSha1 from 'js-sha1';
@@ -111,12 +111,7 @@ export const EncoderMain: React.FC<{ inputFile: File }> = (props) => {
           <FormLabel className="text-sm">Original Size</FormLabel>
           <Input size="sm" value={`${inputFile.size.toLocaleString()} bytes`} isReadOnly />
           <FormLabel className="text-sm">Original SHA1</FormLabel>
-          <Input
-            size="sm"
-            className="text-xs"
-            value={(inputRead.fulfilled && inputRead.value.raw.sha1) || 'computing...'}
-            isReadOnly
-          />
+          <Input size="sm" value={(inputRead.fulfilled && inputRead.value.raw.sha1) || 'computing...'} isReadOnly />
         </FormControl>
       </div>
       <hr className="my-6" />
@@ -158,11 +153,23 @@ export const EncoderMain: React.FC<{ inputFile: File }> = (props) => {
 };
 
 const RendererView: React.FC<{ rendition: RenderedFile }> = (props) => {
+  const { rendered, filename, contentType, raw, encoded, encodePreset } = props.rendition;
   return (
     <>
-      <div className={classNames(paperGrids.controlCell)}>todo</div>
-      <div className={classNames(paperGrids.resultCell)}>
-        <img className="qr-img" src={props.rendition.rendered.gifDataUri} alt="encoded-qr-img" />
+      <div className={classNames(paperGrids.controlCell, 'p-12')}>
+        <FormControl>
+          <FormLabel className="text-sm">Filename</FormLabel>
+          <Input size="sm" value={filename} isReadOnly />
+          <FormLabel className="text-sm">Content Type</FormLabel>
+          <Input size="sm" value={contentType} isReadOnly />
+          <FormLabel className="text-sm">Size</FormLabel>
+          <Input size="sm" value={`${raw.inputBuffer.byteLength.toLocaleString()} bytes`} isReadOnly />
+          <FormLabel className="text-sm">SHA1</FormLabel>
+          <Input size="sm" value={raw.sha1} isReadOnly />
+        </FormControl>
+      </div>
+      <div className={classNames(paperGrids.resultCell, 'p-8')}>
+        <img className={style.renderedQrImage} src={rendered.gifDataUri} alt="encoded-qr-img" />
       </div>
     </>
   );

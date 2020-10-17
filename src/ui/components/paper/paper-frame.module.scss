@@ -5,7 +5,7 @@
   border: 0.5px dotted #333;
 
   grid-template-columns: 100%;
-  grid-template-rows: 320px 480px;
+  grid-template-rows: 360px 360px;
 
   position: relative;
 
@@ -31,6 +31,6 @@
     left: 0;
     top: 0;
     grid-template-columns: 100vw;
-    grid-template-rows: 1fr 100vw;
+    grid-template-rows: 45vh 45vh;
   }
 }

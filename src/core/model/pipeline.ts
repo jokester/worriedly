@@ -2,12 +2,6 @@ import { QrRendition } from './render-pipeline';
 import { EncoderPreset } from '../../ui/encoder-ui/encoder-options';
 
 export enum PipeType {
-  readBytes,
-  assertQrCapacity,
-  computeSHA1,
-
-  //
-
   compressGzip,
   decompressGzip,
 

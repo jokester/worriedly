@@ -1,0 +1,5 @@
+.noPrint {
+  @media print {
+    display: none;
+  }
+}

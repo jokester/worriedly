@@ -3,6 +3,7 @@ import { tailwindComponents } from '../tailwind-components';
 import { Button } from '@chakra-ui/core';
 import { FAIcon } from './font-awesome-icon';
 import classNames from 'classnames';
+import { styleOnlyComponents } from '../styles/style-only-components';
 
 const surroundingBlock = 'inline-flex w-1/5 justify-center items-center ';
 
@@ -11,7 +12,13 @@ export const AppBanner: FC<{
   onRestart?(): void;
 }> = ({ showRestart, onRestart }) => {
   return (
-    <div className="flex mx-auto max-w-screen-sm justify-between content-center py-6" style={{ maxWidth: 350 }}>
+    <div
+      className={classNames(
+        styleOnlyComponents.noPrint,
+        'flex mx-auto max-w-screen-sm justify-between content-center py-6 unprintable',
+      )}
+      style={{ maxWidth: 350 }}
+    >
       <div className={surroundingBlock}>
         <Button
           size="sm"
