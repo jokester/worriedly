@@ -152,7 +152,9 @@ const RendererView: React.FC<{ rendition: RenderedFile }> = (props) => {
   return (
     <>
       <div className={classNames(paperGrids.controlCell)}>todo</div>
-      <div className={classNames(paperGrids.resultCell)}>todo2</div>
+      <div className={classNames(paperGrids.resultCell)}>
+        <img className="qr-img" src={props.rendition.rendered.gifDataUri} alt="encoded-qr-img" />
+      </div>
     </>
   );
 };
