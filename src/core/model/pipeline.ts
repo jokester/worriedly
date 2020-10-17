@@ -26,10 +26,10 @@ export interface RawFile {
     inputBuffer: ArrayBuffer;
     sha1: string;
   };
+  encodePreset: EncoderPreset;
 }
 
 export interface EncodedFile extends RawFile {
-  // encodePreset: EncoderPreset;
   encoded: {
     bytes: string;
     sha1: string;

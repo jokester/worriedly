@@ -14,7 +14,7 @@ import { correctionLevels, encoderPresets } from './encoder-options';
 import { useClippedIndex } from '../components/hooks/use-clipped';
 import { FAIcon } from '../components/font-awesome-icon';
 import { encodeFile } from '../../core/model/encode-pipeline';
-import { createQR, QrRendition } from '../../core/model/render-pipeline';
+import { createQR } from '../../core/model/render-pipeline';
 import { pipe } from 'fp-ts/lib/function';
 
 const logger = getLogLevelLogger('encoder-ui', 'debug');
@@ -22,7 +22,7 @@ const logger = getLogLevelLogger('encoder-ui', 'debug');
 export const EncoderMain: React.FC<{ inputFile: File }> = (props) => {
   const { inputFile } = props;
 
-  const inputReadP = useMemo<Promise<RawFile>>(async (): Promise<RawFile> => {
+  const inputReadP = useMemo(async () => {
     const read = await binaryConversion.blob.toArrayBuffer(inputFile);
     return {
       filename: inputFile.name,
@@ -31,7 +31,7 @@ export const EncoderMain: React.FC<{ inputFile: File }> = (props) => {
         inputBuffer: read,
         sha1: jsSha1(read),
       },
-    };
+    } as const;
   }, [inputFile]);
 
   const inputRead = usePromised(inputReadP);
@@ -42,11 +42,20 @@ export const EncoderMain: React.FC<{ inputFile: File }> = (props) => {
   const preset = encoderPresets[presetIndex];
   const level = correctionLevels[levelIndex];
 
-  const encodedP = useMemo(() => inputReadP.then((read) => encodeFile(read, preset, level.name)), [
-    inputRead,
-    preset,
-    level,
-  ]);
+  const encodedP = useMemo(
+    () =>
+      inputReadP.then((read) =>
+        encodeFile(
+          {
+            ...read,
+            encodePreset: preset,
+          },
+          preset,
+          level.name,
+        ),
+      ),
+    [inputRead, preset, level],
+  );
   const encoded = usePromised(encodedP);
 
   const [rendered, setRendered] = useState<null | RenderedFile>(null);
