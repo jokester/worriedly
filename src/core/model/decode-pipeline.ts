@@ -4,10 +4,15 @@ import { either } from 'fp-ts';
 
 export async function decodeFile(
   recognized: RecognizedFile,
-  preset: TransformPreset,
+  preset?: TransformPreset | null,
 ): Promise<Either<string, DecodedFile>> {
+  console.debug('decodeFile', recognized, preset);
+
+  if (!preset) {
+    return either.left('decode options not specified');
+  }
   if (preset.pipeline.length) {
-    return either.left('decode pipeline not supported');
+    return either.left('decode options not supported (yet)');
   }
 
   return either.right({
