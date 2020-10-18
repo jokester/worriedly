@@ -32,3 +32,20 @@ export function useFileInput(
 
   return [inputElem, operations, inputRef] as const;
 }
+
+export function useHiddenAnchor(extraProps: React.AnchorHTMLAttributes<HTMLAnchorElement>) {
+  const aRef = useRef<HTMLAnchorElement>(null!);
+
+  const operations = {
+    download: () => {
+      console.debug('download', extraProps, aRef.current);
+      if (extraProps.download && extraProps.href && aRef.current) {
+        aRef.current.click();
+      }
+    },
+  } as const;
+
+  const aElem = <a ref={aRef} {...extraProps} />;
+
+  return [aElem, operations, aRef] as const;
+}

@@ -68,8 +68,8 @@ export const EncoderMain: React.FC<{ inputFile: File }> = (props) => {
   }
 
   return (
-    <div className={classNames(paperGrids.allCells, 'px-4')}>
-      <h2 className="py-6 text-xl text-center">
+    <div className={classNames(paperGrids.allCells, 'p-4')}>
+      <h2 className="pb-6 text-xl text-center">
         <FAIcon icon="cog" className="mr-2" />
         Settings
       </h2>
