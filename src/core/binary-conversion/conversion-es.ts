@@ -7,7 +7,17 @@
  */
 export function encodeArrayBufferToString(arrayBuffer: ArrayBuffer): string {
   const uint8array = new Uint8Array(arrayBuffer);
-  return String.fromCharCode(...uint8array);
+  return encodeUInt8ArrayToString(uint8array);
+}
+
+export function encodeUInt8ArrayToString(x: Uint8Array): string {
+  return String.fromCharCode(...x);
+}
+
+export function duplicateArrayBuffer(src: ArrayBuffer | SharedArrayBuffer): ArrayBuffer {
+  const dst = new ArrayBuffer(src.byteLength);
+  new Uint8Array(dst).set(new Uint8Array(src));
+  return dst;
 }
 
 /**

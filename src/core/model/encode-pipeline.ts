@@ -1,4 +1,4 @@
-import { EncodedFile, PipeSpec, RawFile } from './pipeline';
+import { EncodedFile, PipeSpec, RawFile, TransformPreset } from './pipeline';
 import { Either } from 'fp-ts/Either';
 import { binaryConversion } from '../binary-conversion';
 import { either } from 'fp-ts';
@@ -6,11 +6,10 @@ import { eitherChain } from '../../utils/fp-ts/either-chain';
 import { CorrectionLevels, maxNumOfBytes } from './render-pipeline';
 import jsSha1 from 'js-sha1';
 import { pipe } from 'fp-ts/function';
-import { EncoderPreset } from '../../ui/encoder-ui/encoder-options';
 
 export async function encodeFile(
   raw: RawFile,
-  preset: EncoderPreset,
+  preset: TransformPreset,
   level: CorrectionLevels,
 ): Promise<Either<string, EncodedFile>> {
   const transformed = await startEncodePipeline(raw, preset.pipeline);

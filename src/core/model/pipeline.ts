@@ -1,5 +1,4 @@
-import { QrRendition } from './render-pipeline';
-import { EncoderPreset } from '../../ui/encoder-ui/encoder-options';
+import type { CorrectionLevels, QrRendition } from './render-pipeline';
 
 export enum PipeType {
   compressGzip,
@@ -13,6 +12,12 @@ export interface PipeSpec {
   type: PipeType;
 }
 
+export interface TransformPreset {
+  name: string;
+  slug: string;
+  pipeline: PipeSpec[];
+}
+
 export interface RawFile {
   filename: string;
   contentType: string;
@@ -20,7 +25,7 @@ export interface RawFile {
     inputBuffer: ArrayBuffer;
     sha1: string;
   };
-  encodePreset: EncoderPreset;
+  encodePreset: TransformPreset;
 }
 
 export interface EncodedFile extends RawFile {
@@ -32,4 +37,20 @@ export interface EncodedFile extends RawFile {
 
 export interface RenderedFile extends EncodedFile {
   rendered: QrRendition;
+}
+
+export interface RecognizedFile {
+  encoded: {
+    level: CorrectionLevels;
+    buffer: ArrayBuffer;
+    sha1: string;
+  };
+}
+
+export interface DecodedFile extends RecognizedFile {
+  decodePreset: TransformPreset;
+  decoded: {
+    buffer: ArrayBuffer;
+    sha1: string;
+  };
 }

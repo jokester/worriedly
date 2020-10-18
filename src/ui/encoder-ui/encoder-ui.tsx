@@ -10,7 +10,7 @@ import { Button, FormControl, FormLabel, Input, Radio, RadioGroup } from '@chakr
 import { either } from 'fp-ts';
 import { paperGrids } from '../components/paper/paper-frame';
 import classNames from 'classnames';
-import { correctionLevels, encoderPresets } from './encoder-options';
+import { correctionLevels, encoderPresets } from '../../core/model/encode-option';
 import { useClippedIndex } from '../components/hooks/use-clipped';
 import { FAIcon } from '../components/font-awesome-icon';
 import { encodeFile } from '../../core/model/encode-pipeline';

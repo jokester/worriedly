@@ -1,5 +1,5 @@
 import qrcode from 'qrcode-generator';
-import { EncodedFile, RenderedFile } from './pipeline';
+import type { EncodedFile, RenderedFile } from './pipeline';
 
 export type CorrectionLevels = 'H' | 'Q' | 'M' | 'L';
 

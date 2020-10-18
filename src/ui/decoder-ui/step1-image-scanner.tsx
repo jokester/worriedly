@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import { createAspectRatioStyle } from '../aspect-ratio/aspect-ratio';
 import { Deferred } from '@jokester/ts-commonutil/lib/concurrency/deferred';
 import { usePromised } from '@jokester/ts-commonutil/lib/react/hook/use-promised';
-
+rena
 function enumerateDevices(reader: BrowserQRCodeReader) {
   if (!reader.canEnumerateDevices) throw 'cannot';
   return reader.listVideoInputDevices();
@@ -35,8 +35,6 @@ export const Step1ImageScanner: React.FC<{ onResult: Deferred<Result> }> = props
   const fileInputRef = useRef<HTMLInputElement>(null!);
 
   const imgRef = useRef<HTMLImageElement>(null!);
-
-  const [inited, setInited] = useState(false);
 
   const onDeviceSelected = async (deviceId: string) => {
     const dev = await startScanAndWaitForResult(codeReader, deviceId, videoRef.current);

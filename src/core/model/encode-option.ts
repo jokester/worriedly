@@ -1,8 +1,7 @@
-import React from 'react';
-import { PipeSpec, PipeType } from '../../core/model/pipeline';
+import { PipeType, TransformPreset } from './pipeline';
 import { getLogLevelLogger } from '@jokester/ts-commonutil/lib/logging/loglevel-logger';
 import { NonEmptyArray } from 'fp-ts/NonEmptyArray';
-import { maxNumOfBytes } from '../../core/model/render-pipeline';
+import { maxNumOfBytes } from './render-pipeline';
 
 const logger = getLogLevelLogger(__filename, 'debug');
 
@@ -10,13 +9,7 @@ const encoderPresetSlugs = {
   none: 'none',
 } as const;
 
-export interface EncoderPreset {
-  name: string;
-  slug: string;
-  pipeline: PipeSpec[];
-}
-
-export const encoderPresets: readonly EncoderPreset[] & NonEmptyArray<EncoderPreset> = [
+export const encoderPresets: readonly TransformPreset[] & NonEmptyArray<TransformPreset> = [
   {
     name: 'do not encode',
     slug: 'none',
@@ -47,4 +40,3 @@ export const correctionLevels = [
     desc: `H: up to ${maxNumOfBytes('H').toLocaleString()} bytes`,
   },
 ] as const;
-
