@@ -13,19 +13,26 @@ import { either } from 'fp-ts';
 import { readZxingResult } from '../../core/adapter/read-zxing-result';
 import { pipe } from 'fp-ts/lib/function';
 import { DecoderOptions } from './decoder-options';
+import classNames from 'classnames';
 
 function useCameraDecoder() {
   const decoded = useMemo(() => new Deferred<Result>(), []);
 }
 
 export const DecoderMain: React.FC = () => {
-  const [withLock, lockDepth] = useConcurrencyControl(1);
+  const [recognizedFile, setRecognizedFile] = useState<null | RecognizedFile>();
 
-  const startC = useMemo(() => new Deferred<1>(), []);
+  if (recognizedFile) {
+    return <DecoderOptions recognized={recognizedFile} />;
+  }
 
-  const [decodingFile, setDecodingFile] = useState<null | RecognizedFile>();
+  return <QrRecognizer onRecognized={setRecognizedFile} />;
+};
 
+const QrRecognizer: React.FC<{ onRecognized?(o: RecognizedFile): void }> = (props) => {
   const [decodingCamera, setDecodingCamera] = useState(false);
+
+  const [withLock, lockDepth] = useConcurrencyControl(1);
 
   const onStartDecodingFile = (f: File) =>
     withLock(async () => {
@@ -47,7 +54,7 @@ export const DecoderMain: React.FC = () => {
               const bytes = duplicateArrayBuffer(r.bytes);
               const sha1 = jsSha1(bytes);
 
-              setDecodingFile({
+              props.onRecognized?.({
                 encoded: {
                   buffer: r.bytes,
                   sha1,
@@ -70,20 +77,16 @@ export const DecoderMain: React.FC = () => {
     { className: 'hidden', accept: 'image/*' },
   );
 
-  if (decodingFile) {
-    return <DecoderOptions recognized={decodingFile} />;
-  }
-
   return (
-    <div className={paperGrids.controlCell}>
+    <div className={classNames(paperGrids.resultCell, 'h-full')}>
       {fileInputElem}
-      <div className="flex items-center justify-between p-8">
-        <Button onClick={fileOps.open} isDisabled={lockDepth > 0}>
+      <div className="flex items-center justify-between p-8 mt-12">
+        <Button onClick={fileOps.open} isDisabled={lockDepth > 0} isLoading={lockDepth > 0}>
           <FAIcon icon="file" className="mr-4" />
           From image file
         </Button>
         or
-        <Button onClick={fileOps.open} isDisabled={lockDepth > 0}>
+        <Button onClick={fileOps.open} isDisabled={lockDepth > 0} isLoading={lockDepth > 0}>
           <FAIcon icon="camera" className="mr-4" />
           From camera
         </Button>

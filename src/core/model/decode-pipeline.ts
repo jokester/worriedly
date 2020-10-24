@@ -12,7 +12,7 @@ export async function decodeFile(
     return either.left('decode options not specified');
   }
   if (preset.pipeline.length) {
-    return either.left('decode options not supported (yet)');
+    return either.left('decode options not supported yet');
   }
 
   return either.right({

@@ -15,11 +15,9 @@ import { useHiddenAnchor } from '../components/hooks/use-file-input';
 export const DecoderOptions: React.FC<{ recognized: RecognizedFile }> = (props) => {
   const [presetIndex, setPresetIndex] = useClippedIndex(decodePresets);
 
-  const decodedP = useMemo(() => decodeFile(props.recognized, decodePresets[presetIndex]), []);
+  const decodedP = useMemo(() => decodeFile(props.recognized, decodePresets[presetIndex]), [presetIndex]);
 
   const decoded = usePromised(decodedP);
-
-  console.log('decoded', decoded);
 
   return (
     <>
@@ -29,7 +27,7 @@ export const DecoderOptions: React.FC<{ recognized: RecognizedFile }> = (props) 
           Settings
         </h2>
         <FormControl className="w-1/2">
-          <FormLabel className="text-sm">Encode Preset </FormLabel>
+          <FormLabel className="text-sm">Decode Preset </FormLabel>
           <RadioGroup value={presetIndex} onChange={(ev) => setPresetIndex(Number(ev.target.value))}>
             {decodePresets.map((preset, i) => (
               <Radio key={i} value={i} size="sm">
@@ -47,7 +45,7 @@ export const DecoderOptions: React.FC<{ recognized: RecognizedFile }> = (props) 
           pipe(
             decoded.value,
             either.fold(
-              (l) => `Error: ${l}` as React.ReactNode,
+              (l) => <p className="mt-4 text-red-600">Error: {l}</p>,
               (r) => <DecodeResultView decoded={r} />,
             ),
           )}
@@ -88,18 +86,16 @@ const DecodeResultView: React.FC<{ decoded: DecodedFile }> = ({ decoded }) => {
       <FormLabel className="text-sm">Filename</FormLabel>
       <Input
         size="sm"
-        placeholder="(type filename)"
+        placeholder="Type filename to download"
         onChange={(ev: React.ChangeEvent<HTMLInputElement>) => setFilename(ev.target.value)}
       />
-      <FormLabel className="text-sm">Content Type</FormLabel>
-      <Input size="sm" value="_not saved_" isReadOnly />
       <FormLabel className="text-sm">Original Size</FormLabel>
       <Input size="sm" value={`${decoded.decoded.buffer.byteLength.toLocaleString()} bytes`} isReadOnly />
       <FormLabel className="text-sm">Original SHA1</FormLabel>
       <Input size="sm" value={decoded.decoded.sha1} isReadOnly />
 
-      <Button isFullWidth onClick={anchorOps.download} isDisabled={!filename}>
-        Download
+      <Button isFullWidth onClick={anchorOps.download} isDisabled={!filename} className="mt-6">
+        {filename ? 'Save as file' : 'Save as file (filename required)'}
       </Button>
     </FormControl>
   );
