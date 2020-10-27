@@ -5,7 +5,7 @@ import { FAIcon } from './font-awesome-icon';
 import classNames from 'classnames';
 import { styleOnlyComponents } from '../styles/style-only-components';
 
-const surroundingBlock = 'inline-flex w-1/5 justify-center items-center ';
+const surroundingBlock = 'inline-flex justify-center items-center w-48 px-4';
 
 export const AppBanner: FC<{
   showRestart?: boolean;
@@ -15,19 +15,18 @@ export const AppBanner: FC<{
     <div
       className={classNames(
         styleOnlyComponents.noPrint,
-        'flex mx-auto max-w-screen-sm justify-between content-center py-6 unprintable',
+        'flex mx-auto max-w-screen-sm justify-around content-center py-6 unprintable',
       )}
-      style={{ maxWidth: 350 }}
     >
       <div className={surroundingBlock}>
         <Button
           size="sm"
           onClick={onRestart}
-          className={classNames({
-            invisible: false, //!showRestart,
+          className={classNames('px-2', {
+            invisible: !showRestart,
           })}
         >
-          Restart
+          Start over
         </Button>
       </div>
       <h1 className={tailwindComponents.appTitle}>Worriedly</h1>
