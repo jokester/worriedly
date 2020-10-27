@@ -62,8 +62,13 @@ const QrRecognizer: React.FC<{ onRecognized?(o: RecognizedFile): void }> = (prop
       } catch (e) {
         alert('Error recognizing QR code: ' + String(e));
       } finally {
-        if (videoRef.current) {
+        const srcObject = videoRef.current?.srcObject;
+        if (srcObject) {
+          videoRef.current.pause();
           videoRef.current.srcObject = null;
+          if (srcObject instanceof MediaStream) {
+            srcObject.getTracks().forEach((track) => track.stop());
+          }
         }
         setReadingCamera(false);
       }
