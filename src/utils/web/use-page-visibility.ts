@@ -1,5 +1,8 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { useMounted } from '@jokester/ts-commonutil/lib/react/hook/use-mounted';
+import useConstant from 'use-constant';
+import { Deferred } from '@jokester/ts-commonutil/lib/concurrency/deferred';
+import { useUnmount } from 'react-use';
 
 export function usePageHidden(): { readonly current: boolean } {
   const docHidden = useRef(false);
@@ -32,4 +35,11 @@ export function useWhenMounted(): <T extends Promise<any>>(p: T) => T {
       ),
     ) as any;
   }, []);
+}
+
+export function useUnmounted(): Promise<void> {
+  const _unmounted = useConstant(() => new Deferred<void>());
+  useUnmount(() => _unmounted.fulfill());
+
+  return useConstant(() => Promise.resolve(_unmounted));
 }
