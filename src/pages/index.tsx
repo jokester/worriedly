@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import { EncoderMain } from '../ui/encoder-ui/encoder-ui';
 import { DecoderMain } from '../ui/decoder-ui/decoder-main';
 
-const IndexPage: FC = () => {
+export const IndexPage: FC = () => {
   const [encodeFile, setEncodeFile] = useState<null | File>(null);
   const [decoding, setDecoding] = useState(false);
   const onRestart = () => {
@@ -30,5 +30,3 @@ const IndexPage: FC = () => {
     </LayoutRoot>
   );
 };
-
-export default IndexPage;

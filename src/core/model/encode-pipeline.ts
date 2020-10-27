@@ -2,7 +2,6 @@ import { EncodedFile, PipeSpec, RawFile, TransformPreset } from './pipeline';
 import { Either } from 'fp-ts/Either';
 import { binaryConversion } from '../binary-conversion';
 import { either } from 'fp-ts';
-import { eitherChain } from '../../utils/fp-ts/either-chain';
 import { CorrectionLevels, maxNumOfBytes } from './render-pipeline';
 import jsSha1 from 'js-sha1';
 import { pipe } from 'fp-ts/function';
@@ -72,10 +71,10 @@ async function runPipeline(
     return either.right(s);
   }
 
-  return eitherChain.tasksT(
-    () => runStep(s, todo[0]),
-    (r) => runPipeline(r, todo.slice(1)),
-  );
+  const res = await runStep(s, todo[0]);
+  if (either.isLeft(res)) return res;
+
+  return runPipeline(res.right, todo.slice(1));
 }
 
 async function runStep(

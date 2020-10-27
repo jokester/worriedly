@@ -48,27 +48,29 @@ const chainTasksT /* T for tail */ = async <
   task5?: (b1: B1, b2: B2, b3: B3, b4: B4) => MaybePromise<Either<A, B5>>,
   task6?: (b1: B1, b2: B2, b3: B3, b4: B4, b5: B5) => MaybePromise<Either<A, B6>>,
   task7?: (b1: B1, b2: B2, b3: B3, b4: B4, b5: B5, b6: B6) => MaybePromise<Either<A, B7>>,
-): Promise<Either<
-  A,
-  B7 extends void
-    ? B6 extends void
-      ? B5 extends void
-        ? B4 extends void
-          ? B3 extends void
-            ? B2 extends void
-              ? B1 extends void
-                ? void
-                : B1
-              : B2
-            : B3
-          : B4
-        : B5
-      : B6
-    : B7
->> => {
+): Promise<
+  Either<
+    A,
+    B7 extends void
+      ? B6 extends void
+        ? B5 extends void
+          ? B4 extends void
+            ? B3 extends void
+              ? B2 extends void
+                ? B1 extends void
+                  ? void
+                  : B1
+                : B2
+              : B3
+            : B4
+          : B5
+        : B6
+      : B7
+  >
+> => {
   return pipe(
     await chainTasks(task1, task2, task3, task4, task5, task6, task7),
-    either.map(_ => _.pop() as any),
+    either.map((_) => _.pop() as any),
   );
 };
 

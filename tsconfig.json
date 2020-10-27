@@ -1,42 +1,27 @@
 {
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "allowJs": true,
-    "allowSyntheticDefaultImports": true,
-    "alwaysStrict": true,
-    "checkJs": true,
-    "emitDecoratorMetadata": true,
-    "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "forceConsistentCasingInFileNames": true,
-    "importHelpers": true,
-    "noEmit": true,
-    "jsx": "react",
+    "isolatedModules": true,
+    "jsx": "preserve",
     "module": "esnext",
     "moduleResolution": "node",
-    "noImplicitReturns": true,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "sourceMap": true,
-    "strict": true,
-    "target": "esnext"
+    "target": "esnext",
+    "noEmit": true,
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "typeRoots": ["node_modules/@types", "typings"]
   },
   "exclude": [
-    "dist",
-    ".cache",
-    "docs",
-    "demo",
     "node_modules",
+    "build",
     "scripts",
     "coverage",
-    "build",
     "__test__",
     "bin",
     "jest.config.js",
-    "webpack*",
-    "src/ts-commonutil",
-    "gatsby-*",
-    "public"
-  ]
+    "acceptance-tests",
+    "webpack",
+    "jest",
+    "src/setupTests.ts"
+  ],
+  "include": ["src"]
 }
