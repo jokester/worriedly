@@ -1,4 +1,4 @@
-import { Result } from '@zxing/library';
+import type { Result } from '@zxing/library';
 import { either } from 'fp-ts';
 import { CorrectionLevels } from '../model/render-pipeline';
 import ResultMetadataType from '@zxing/library/esm/core/ResultMetadataType';

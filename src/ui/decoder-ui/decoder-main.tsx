@@ -4,7 +4,7 @@ import { paperGrids } from '../components/paper/paper-frame';
 import { Button } from '@chakra-ui/core';
 import { FAIcon } from '../components/font-awesome-icon';
 import { Deferred } from '@jokester/ts-commonutil/lib/concurrency/deferred';
-import { BrowserQRCodeReader, Result } from '@zxing/library';
+import type { Result } from '@zxing/library';
 import { useConcurrencyControl } from '@jokester/ts-commonutil/lib/react/hook/use-concurrency-control';
 import { RecognizedFile } from '../../core/model/pipeline';
 import { either } from 'fp-ts';
@@ -17,6 +17,7 @@ import { TicToc } from '@jokester/ts-commonutil/lib/concurrency/tic-toc';
 import { useMediaDevices, useUnmount, useUnmountPromise } from 'react-use';
 import { usePageHidden, useUnmounted, useWhenMounted } from '../../utils/web/use-page-visibility';
 import { stopVideo } from '../../utils/webrtc/read-stream';
+import { BrowserQRCodeReader } from '@zxing/library/esm';
 
 export const DecoderMain: React.FC = () => {
   const [recognizedFile, setRecognizedFile] = useState<null | RecognizedFile>();
