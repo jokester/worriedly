@@ -2,4 +2,5 @@
 
 // a dummy entrypoint to run real built js
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 require('../dist/bin/worriedly').cliMain();

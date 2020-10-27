@@ -15,6 +15,7 @@
   "scripts": {
     "start:web": "craco start",
     "build:web": "craco build",
+    "analyze:web": "craco build && source-map-explorer 'build/static/js/*.js'",
     "start:cli": "node build/bin/worriedly",
     "start:ts": "ts-node src/bin/worriedly",
     "build:cli": "rm -rf dist && tsc --project tsconfig.cjs.json",
