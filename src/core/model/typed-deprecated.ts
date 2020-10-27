@@ -1,16 +1,15 @@
-import { CorrectionLevels } from './create-qr';
+import { CorrectionLevels } from './render-pipeline';
 
-export interface InputData {
-  filename: string;
-  inputBuffer: ArrayBuffer;
-  contentType: string;
-  sha1: string;
-}
-
+/**
+ * @deprecated
+ */
 export enum DataFilters {
   none = 'none',
 }
 
+/**
+ * @deprecated
+ */
 export interface QrOptions {
   filters: DataFilters[];
   filteredBytes: string; // inputBuffer filtered by a chain of filters

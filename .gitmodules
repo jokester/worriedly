@@ -1,3 +1,0 @@
-[submodule "src/ts-commonutil"]
-	path = src/ts-commonutil
-	url = https://github.com/jokester/ts-commonutil.git

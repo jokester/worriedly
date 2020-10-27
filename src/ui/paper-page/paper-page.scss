@@ -3,11 +3,10 @@ body {
 }
 
 .paper-page-container {
-  width: 100%;
-  display: flex;
-  position: relative;
-  justify-content: center;
-  align-items: center;
+  display: grid;
+
+  background-color: lightyellow;
+  height: 400px;
 
   .paper-page {
     background-color: white;

@@ -1,8 +1,8 @@
 import { ArgumentParser } from 'argparse';
-import * as fsp from '../ts-commonutil/node/fsp';
-import { readStream } from '../ts-commonutil/node';
-import { getWinstonLogger } from '../ts-commonutil/logging/winston-logger';
-import { createQRFromBytes } from '../lib/creating-qr';
+import { encodeBuffer } from '../core/node/creating-qr';
+import { renderQr } from '../core/model/render-pipeline';
+import { getWinstonLogger } from '@jokester/ts-commonutil/lib/logging/winston-logger';
+import { fsp, readStream } from '@jokester/ts-commonutil/lib/node';
 
 const logger = getWinstonLogger(__filename, 'debug');
 
@@ -69,12 +69,17 @@ async function worriedlyPrintQrMain(options: PrintQrOptions) {
     ? (((await fsp.readFile(options.inputFile, { encoding: 'buffer' })) as unknown) as Buffer)
     : await readStream(process.stdin);
 
+  logger.info('NEED TO BE WRITTEN');
+  if (1) {
+    process.exit(1);
+  }
+
   // TODO: should warn user of capacity/err correcation level of QR codepac
   logger.info('got %d bytes', inputBytes.length);
   logger.info('got %o', inputBytes);
 
   const outputFormat = inferOutputFormat(options.outputFormat, options.outputFile);
-  const { moduleCount, gifDataUri } = await createQRFromBytes(inputBytes);
+  const { moduleCount, gifDataUri } = await renderQr(encodeBuffer(inputBytes), 'H');
 
   logger.info('genereated moduleCount=%d', moduleCount);
   logger.info('generated data uri of %d chars', gifDataUri.length);

@@ -1,8 +1,21 @@
 import qrcode from 'qrcode-generator';
+import type { EncodedFile, RenderedFile } from './pipeline';
 
-export type CorrectionLevels = Parameters<typeof qrcode>[1];
+export type CorrectionLevels = 'H' | 'Q' | 'M' | 'L';
 
-export function createQRFromBytes(encodedBytes: string, errorCorrectionLevel: CorrectionLevels = 'H') {
+export interface QrRendition {
+  readonly moduleCount: number;
+  readonly gifDataUri: string;
+}
+
+export function createQR(encoded: EncodedFile, level: CorrectionLevels): RenderedFile {
+  return {
+    ...encoded,
+    rendered: renderQr(encoded.encoded.bytes, level),
+  };
+}
+
+export function renderQr(encodedBytes: string, errorCorrectionLevel: CorrectionLevels): QrRendition {
   throwIfLengthExceeded(errorCorrectionLevel, encodedBytes.length);
 
   const qr = qrcode(0, errorCorrectionLevel);
@@ -10,7 +23,6 @@ export function createQRFromBytes(encodedBytes: string, errorCorrectionLevel: Co
   qr.addData(encodedBytes, 'Byte');
   qr.make();
 
-  // TODO: what are better size for qr code (considering resolution for print/scan)
   const moduleCount = qr.getModuleCount();
 
   const gifDataUri = qr.createDataURL(1, 0);
@@ -18,10 +30,10 @@ export function createQRFromBytes(encodedBytes: string, errorCorrectionLevel: Co
   return {
     moduleCount,
     gifDataUri,
-  };
+  } as const;
 }
 
-export function maxNumOfBytes(errorCorrectionLevel: CorrectionLevels) {
+export function maxNumOfBytes(errorCorrectionLevel: CorrectionLevels): number {
   // see https://www.qrcode.com/en/about/version.html
   switch (errorCorrectionLevel) {
     case 'L':
