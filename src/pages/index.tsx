@@ -30,4 +30,3 @@ export const IndexPage: FC = () => {
     </LayoutRoot>
   );
 };
-
