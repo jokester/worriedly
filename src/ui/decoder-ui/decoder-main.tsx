@@ -12,6 +12,8 @@ import { readZxingResult } from '../../core/adapter/read-zxing-result';
 import { pipe } from 'fp-ts/lib/function';
 import { DecoderOptions } from './decoder-options';
 import classNames from 'classnames';
+import useConstant from 'use-constant';
+import { usePromised } from '@jokester/ts-commonutil/lib/react/hook/use-promised';
 
 export const DecoderMain: React.FC = () => {
   const [recognizedFile, setRecognizedFile] = useState<null | RecognizedFile>();
@@ -24,22 +26,29 @@ export const DecoderMain: React.FC = () => {
 };
 
 const QrRecognizer: React.FC<{ onRecognized?(o: RecognizedFile): void }> = (props) => {
-  const [decodingCamera, setDecodingCamera] = useState(false);
+  const reader = useConstant(() => new BrowserQRCodeReader());
 
   const [withLock, lockDepth] = useConcurrencyControl(1);
 
-  const onStartDecodingCamera = () =>
+  const [readingCamera, setReadingCamera] = useState(false);
+  const [devicesP, setDevices] = useState(() => reader.listVideoInputDevices());
+
+  const devices = usePromised(devicesP);
+
+  const onStartDecodingCamera = (device: MediaDeviceInfo) =>
     withLock(async () => {
+      setReadingCamera(true);
       const completableFuture = new Deferred<Result>();
-      await new BrowserQRCodeReader().decodeFromVideoDevice(null, videoRef.current, (result, err) => {
-        if (err) {
-          completableFuture.reject(err);
-        } else if (result) {
-          completableFuture.fulfill(result);
-        }
-      });
 
       try {
+        await reader.decodeFromVideoDevice(device.deviceId, videoRef.current, (result, err) => {
+          if (err) {
+            completableFuture.reject(err);
+          } else if (result) {
+            completableFuture.fulfill(result);
+          }
+        });
+
         const decoded = await completableFuture;
         pipe(
           readZxingResult(decoded),
@@ -52,6 +61,11 @@ const QrRecognizer: React.FC<{ onRecognized?(o: RecognizedFile): void }> = (prop
         );
       } catch (e) {
         alert('Error recognizing QR code: ' + String(e));
+      } finally {
+        if (videoRef.current) {
+          videoRef.current.srcObject = null;
+        }
+        setReadingCamera(false);
       }
     });
 
@@ -60,9 +74,8 @@ const QrRecognizer: React.FC<{ onRecognized?(o: RecognizedFile): void }> = (prop
       const imgUrl = URL.createObjectURL(f);
 
       try {
-        const decoder = new BrowserQRCodeReader();
         console.debug('decoded', imgUrl);
-        const decoded = await decoder.decodeFromImageUrl(imgUrl);
+        const decoded = await reader.decodeFromImageUrl(imgUrl);
 
         pipe(
           readZxingResult(decoded),
@@ -92,19 +105,30 @@ const QrRecognizer: React.FC<{ onRecognized?(o: RecognizedFile): void }> = (prop
     <>
       <div className={classNames(paperGrids.controlCell, 'h-full')}>
         {fileInputElem}
-        <div className="flex items-center justify-between p-8 mt-12">
-          <Button onClick={fileOps.open} isDisabled={lockDepth > 0} isLoading={lockDepth > 0}>
+        <div className="justify-between p-8 mt-12">
+          <Button onClick={fileOps.open} isDisabled={lockDepth > 0} isLoading={lockDepth > 0} className="w-full">
             <FAIcon icon="file" className="mr-4" />
-            From image file
+            From file
           </Button>
-          or
-          <Button onClick={onStartDecodingCamera} isDisabled={lockDepth > 0} isLoading={lockDepth > 0}>
-            <FAIcon icon="camera" className="mr-4" />
-            From camera
-          </Button>
+
+          {devices.fulfilled &&
+            devices.value
+              .filter((_) => _.kind === 'videoinput')
+              .map((deviceInfo) => (
+                <Button
+                  onClick={() => onStartDecodingCamera(deviceInfo)}
+                  isDisabled={lockDepth > 0}
+                  isLoading={lockDepth > 0}
+                  key={`${deviceInfo.deviceId} / ${deviceInfo.groupId}`}
+                  className="mt-12 w-full"
+                >
+                  <FAIcon icon="camera" className="mr-4" />
+                  From {deviceInfo.label}
+                </Button>
+              ))}
         </div>
       </div>
-      <div className={classNames(paperGrids.resultCell, 'p-16')}>
+      <div className={classNames(paperGrids.resultCell, 'p-16', { hidden: !readingCamera })}>
         <video ref={videoRef} />
       </div>
     </>
