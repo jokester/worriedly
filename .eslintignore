@@ -1,5 +1,4 @@
-node_modules
+dist
+public
 build
 vendor
-/src/ts-commonutil/
-/*.js
