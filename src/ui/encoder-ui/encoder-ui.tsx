@@ -2,7 +2,6 @@ import React, { useMemo, useState } from 'react';
 
 import style from './encoder-ui.module.scss';
 import { usePromised } from '@jokester/ts-commonutil/lib/react/hook/use-promised';
-import { getLogLevelLogger } from '@jokester/ts-commonutil/lib/logging/loglevel-logger';
 import jsSha1 from 'js-sha1';
 import { binaryConversion } from '../../core/binary-conversion';
 import { RawFile, RenderedFile } from '../../core/model/pipeline';
@@ -16,8 +15,6 @@ import { FAIcon } from '../components/font-awesome-icon';
 import { encodeFile } from '../../core/model/encode-pipeline';
 import { createQR } from '../../core/model/render-pipeline';
 import { pipe } from 'fp-ts/lib/function';
-
-const logger = getLogLevelLogger('encoder-ui', 'debug');
 
 export const EncoderMain: React.FC<{ inputFile: File }> = (props) => {
   const { inputFile } = props;
@@ -60,8 +57,8 @@ export const EncoderMain: React.FC<{ inputFile: File }> = (props) => {
 
   const [rendered, setRendered] = useState<null | RenderedFile>(null);
 
-  logger.debug('inputRead', inputRead);
-  logger.debug('encoded', encoded);
+  console.debug('inputRead', inputRead);
+  console.debug('encoded', encoded);
 
   if (rendered) {
     return <RendererView rendition={rendered} />;

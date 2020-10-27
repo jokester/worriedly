@@ -1,9 +1,6 @@
 import { PipeType, TransformPreset } from './pipeline';
-import { getLogLevelLogger } from '@jokester/ts-commonutil/lib/logging/loglevel-logger';
 import { NonEmptyArray } from 'fp-ts/NonEmptyArray';
 import { maxNumOfBytes } from './render-pipeline';
-
-const logger = getLogLevelLogger(__filename, 'debug');
 
 const encoderPresetSlugs = {
   none: 'none',
