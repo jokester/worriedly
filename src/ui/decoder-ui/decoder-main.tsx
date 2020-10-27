@@ -147,19 +147,49 @@ const QrRecognizer: React.FC<{ onRecognized?(o: RecognizedFile): void }> = (prop
 
         {devices
           .filter((_) => _.kind === 'videoinput')
-          .map((deviceInfo) => (
+          .map((deviceInfo, cameraIndex) => (
             <Button
               onClick={() => onStartDecodingCamera(deviceInfo)}
               isDisabled={lockDepth > 0}
               isLoading={lockDepth > 0}
               key={`${deviceInfo.deviceId} / ${deviceInfo.groupId}`}
-              className="mt-12 w-full"
+              className="mt-12 w-full h-16"
             >
-              <FAIcon icon="camera" className="mr-4" />
-              From {deviceInfo.label}
+              <DevicePreview deviceInfo={deviceInfo} deviceIndex={cameraIndex} />
             </Button>
           ))}
       </div>
     </div>
+  );
+};
+
+const DevicePreview: React.FC<{ deviceInfo: MediaDeviceInfo; deviceIndex: number }> = ({ deviceInfo, deviceIndex }) => {
+  if (deviceInfo.label) {
+    return (
+      <>
+        <FAIcon icon="camera" className="mr-4" />
+        Scan with
+        <br className="my-1" />
+        {`${deviceInfo.label}`}
+      </>
+    );
+  }
+
+  if (deviceInfo.deviceId && 0) {
+    return (
+      <>
+        <FAIcon icon="camera" className="mr-4" />
+        Scan with
+        <br className="my-1" />
+        {`(id: ${deviceInfo.deviceId})`}
+      </>
+    );
+  }
+
+  return (
+    <>
+      <FAIcon icon="camera" className="mr-4" />
+      Scan with Camera #{1 + deviceIndex}
+    </>
   );
 };

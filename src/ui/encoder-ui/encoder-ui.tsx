@@ -106,8 +106,6 @@ export const EncoderMain: React.FC<{ inputFile: File }> = (props) => {
         <FormControl>
           <FormLabel className="text-sm">Filename</FormLabel>
           <Input size="sm" value={inputFile.name} isReadOnly />
-          <FormLabel className="text-sm">Content Type</FormLabel>
-          <Input size="sm" value={inputFile.type} isReadOnly />
           <FormLabel className="text-sm">Original Size</FormLabel>
           <Input size="sm" value={`${inputFile.size.toLocaleString()} bytes`} isReadOnly />
           <FormLabel className="text-sm">Original SHA1</FormLabel>
