@@ -20,14 +20,14 @@ export const IndexPage: FC = () => {
     <LayoutRoot>
       <AppBanner onRestart={onRestart} showRestart={!!(encodeFile || decoding)} />
       <PaperFrame className="mx-auto ">
-        {encodeFile === null && !decoding && (
+        {null && encodeFile === null && !decoding && (
           <div className={classNames(paperGrids.allCells, 'flex items-center justify-center')}>
             <ModeSelector onStartEncode={setEncodeFile} onStartDecode={() => setDecoding(true)} />
           </div>
         )}
-        {encodeFile && <EncoderMain inputFile={encodeFile} />}
+        {null && encodeFile && <EncoderMain inputFile={encodeFile} />}
         {null && decoding && <DecoderMain />}
-        {null && <DecoderMultipleDemo />}
+        {<DecoderMultipleDemo />}
       </PaperFrame>
     </LayoutRoot>
   );

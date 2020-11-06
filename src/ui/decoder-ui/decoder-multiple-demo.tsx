@@ -1,5 +1,7 @@
 import { useFileInput } from '../components/hooks/use-file-input';
 import React, { useEffect, useRef, useState } from 'react';
+import { BrowserQRCodeReader } from '@zxing/library';
+import { readCanvas, tryDecodeMultiple } from '../../core/model/decode-multiple-qr';
 
 export const DecoderMultipleDemo: React.FC = () => {
   const [file, setFile] = useState<null | string>(null);
@@ -16,7 +18,7 @@ export const DecoderMultipleDemo: React.FC = () => {
     <div>
       <label>select a file {inputElem}</label>
 
-      {file && <Demo baseImageUrl={file} />}
+      {file && <Demo key={file} baseImageUrl={file} />}
     </div>
   );
 };
@@ -28,7 +30,9 @@ const Demo: React.FC<{ baseImageUrl: string }> = (props) => {
   useEffect(() => {
     const img = imgRef.current;
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d')!;
+    const ctx = canvas.getContext('2d');
+
+    if (!(img && canvas && ctx)) return;
 
     img.src = props.baseImageUrl;
 
@@ -39,11 +43,20 @@ const Demo: React.FC<{ baseImageUrl: string }> = (props) => {
     };
   }, []);
 
-  const doDecodeAndConsume = () => {};
+  const doDecodeAndConsume = () => {
+    const img = imgRef.current;
+    const canvas = canvasRef.current;
+
+    if (!(img && canvas)) return;
+
+    for (const q of tryDecodeMultiple(new BrowserQRCodeReader(), readCanvas(canvas))) {
+    }
+  };
 
   return (
     <div>
-      <img ref={imgRef} />
+      <button onClick={doDecodeAndConsume}>doSomething()</button>
+      <img ref={imgRef} className="w-full h-full" />
       <canvas ref={canvasRef} />
     </div>
   );

@@ -8,6 +8,8 @@ import {
   Result,
   BarcodeFormat,
   ResultMetadataType,
+  HTMLCanvasElementLuminanceSource,
+  HybridBinarizer,
 } from '@zxing/library/esm';
 import OrigDetector from '@zxing/library/esm/core/qrcode/detector/Detector';
 import type FinderPatternInfo from '@zxing/library/esm/core/qrcode/detector/FinderPatternInfo';
@@ -57,22 +59,26 @@ function buildResult(detectorResult: DetectorResult, decoderResult: DecoderResul
   return result;
 }
 
-function clearX(prev: BinaryBitmap, consumed: DetectorResult): BinaryBitmap {
-  throw '';
+function clearRecognized(prev: BinaryBitmap, consumed: DetectorResult): BinaryBitmap {
+  throw 'TODO';
 }
 
-function* readX(
+export function readCanvas(canvas: HTMLCanvasElement) {
+  const luminanceSource = new HTMLCanvasElementLuminanceSource(canvas);
+  const hybridBinarizer = new HybridBinarizer(luminanceSource);
+  return new BinaryBitmap(hybridBinarizer);
+}
+
+export function* tryDecodeMultiple(
   browserReader: BrowserQRCodeReader,
-  reader: QRCodeReader,
-  src: HTMLImageElement | HTMLVideoElement,
-): Iterator<DecodeProgress> {
+  initialBitmap: BinaryBitmap,
+): IterableIterator<DecodeProgress> {
   let finished = false;
 
   const hints = new Map([[DecodeHintType.TRY_HARDER, true]]);
-  const initialBitmap = browserReader.createBinaryBitmap(src);
   let prevResult = initialBitmap;
 
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 1; i++) {
     const detector = new Detector(prevResult.getBlackMatrix());
     const firstFinderPatternInfo = new FinderPatternFinder(prevResult.getBlackMatrix(), {
       foundPossibleResultPoint() {},
@@ -82,9 +88,18 @@ function* readX(
      * points: resultPoint()
      */
     const detectorResult: DetectorResult = detector.processFinderPatternInfo(firstFinderPatternInfo);
+    console.log('detectorResult', detectorResult);
 
-    const decoderResult = new Decoder().decodeBitMatrix(detectorResult.getBits());
-    const result = buildResult(detectorResult, decoderResult);
+    try {
+      const decoderResult = new Decoder().decodeBitMatrix(detectorResult.getBits());
+      console.log('decoderResult', decoderResult);
+
+      const result = buildResult(detectorResult, decoderResult);
+      console.log('result', result);
+    } catch (wtf) {
+      console.error('error', wtf);
+      return;
+    }
   }
 
   yield {
