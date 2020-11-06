@@ -163,9 +163,23 @@ const RendererView: React.FC<{ rendition: RenderedFile }> = (props) => {
           <Input size="sm" value={raw.sha1} isReadOnly />
         </FormControl>
       </div>
-      <div className={classNames(paperGrids.resultCell, 'p-8')}>
-        <img className={style.renderedQrImage} src={rendered.gifDataUri} alt="encoded-qr-img" />
+      <div className={classNames(paperGrids.resultCell, 'p-8 ')}>
+        <DuplicatedQr imgUrl={rendered.gifDataUri} />
       </div>
+    </>
+  );
+};
+
+const DuplicatedQr: React.FC<{ imgUrl: string }> = (props) => {
+  const imgClass = 'inline-block w-1/4 h-1/4';
+  const imgStyle: React.CSSProperties = { imageRendering: 'pixelated' };
+  return (
+    <>
+      <img className={classNames('float-left', imgClass)} style={imgStyle} src={props.imgUrl} alt="encoded-qr-img" />
+      <img className={classNames('float-right', imgClass)} style={imgStyle} src={props.imgUrl} alt="encoded-qr-img" />
+      <hr className="my-8 invisible float-none " style={{ clear: 'both' }} />
+      <img className={classNames('float-left', imgClass)} style={imgStyle} src={props.imgUrl} alt="encoded-qr-img" />
+      <img className={classNames('float-right', imgClass)} style={imgStyle} src={props.imgUrl} alt="encoded-qr-img" />
     </>
   );
 };

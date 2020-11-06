@@ -35,6 +35,14 @@ export interface EncodedFile extends RawFile {
   };
 }
 
+export interface MultipleEncodedFile extends EncodedFile {
+  segmented: { bytes: string; sha1: string }[];
+}
+
+export interface MultipleRenderedFile extends MultipleEncodedFile {
+  renditions: QrRendition[];
+}
+
 export interface RenderedFile extends EncodedFile {
   rendered: QrRendition;
 }

@@ -6,6 +6,7 @@ import { PaperFrame, paperGrids } from '../ui/components/paper/paper-frame';
 import classNames from 'classnames';
 import { EncoderMain } from '../ui/encoder-ui/encoder-ui';
 import { DecoderMain } from '../ui/decoder-ui/decoder-main';
+import { DecoderMultipleDemo } from '../ui/decoder-ui/decoder-multiple-demo';
 
 export const IndexPage: FC = () => {
   const [encodeFile, setEncodeFile] = useState<null | File>(null);
@@ -25,7 +26,8 @@ export const IndexPage: FC = () => {
           </div>
         )}
         {encodeFile && <EncoderMain inputFile={encodeFile} />}
-        {decoding && <DecoderMain />}
+        {null && decoding && <DecoderMain />}
+        {null && <DecoderMultipleDemo />}
       </PaperFrame>
     </LayoutRoot>
   );
