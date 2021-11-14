@@ -7,6 +7,8 @@
 /coverage
 /.next
 /.env
+/public/sw.js
+/public/workbox*.js
 node_modules
 
 npm-debug.log*

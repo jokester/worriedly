@@ -70,10 +70,14 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: !!process.env.BUNDLE_ANALYZE,
 });
 
+const withPWA = require('next-pwa');
+const runtimeCaching = require('next-pwa/cache');
+
 module.exports = withPlugins(
   [
     [withBundleAnalyzer], // no idea how to make it optional
     // [require('next-images'), {}], // required after { disableStaticImages: true }
+    [withPWA, { pwa: { dest: 'public', runtimeCaching } }],
     [
       optional(() =>
         // eslint-disable-next-line node/no-unpublished-require

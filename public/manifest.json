@@ -1,0 +1,17 @@
+{
+  "theme_color": "#ffffff",
+  "background_color": "#000000",
+  "display": "fullscreen",
+  "scope": "/",
+  "start_url": "/",
+  "name": "Worriedly Long",
+  "short_name": "Worriedly",
+  "description": "TODO",
+  "icons": [
+    {
+      "src": "/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    }
+  ]
+}

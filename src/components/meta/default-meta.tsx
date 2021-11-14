@@ -6,6 +6,9 @@ export const DefaultMeta: React.FC<{ title?: string }> = (props) => {
   return (
     <Head>
       <title key="head-title">{props.title ?? 'untitled'}</title>
+      <meta key="meta-theme-color" name="theme-color" content="#f9a8d4" />
+      <link key="link-manifest" rel="manifest" href="/manifest.json" />
+      <link rel="apple-touch-icon" href="/icon-32x32.png" />
       <link
         rel="stylesheet"
         key="css-tailwindcss"
