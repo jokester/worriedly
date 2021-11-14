@@ -1,13 +1,13 @@
 import React, { FC, useState } from 'react';
-import { LayoutRoot } from '../ui/layout/layout-root';
-import { AppBanner } from '../ui/components/app-banner';
-import { ModeSelector } from '../ui/mode-selector';
-import { PaperFrame, paperGrids } from '../ui/components/paper/paper-frame';
+import { LayoutRoot } from '../src/ui/layout/layout-root';
+import { AppBanner } from '../src/ui/components/app-banner';
+import { ModeSelector } from '../src/ui/mode-selector';
+import { PaperFrame, paperGrids } from '../src/ui/components/paper/paper-frame';
 import classNames from 'classnames';
-import { EncoderMain } from '../ui/encoder-ui/encoder-ui';
-import { DecoderMain } from '../ui/decoder-ui/decoder-main';
+import { EncoderMain } from '../src/ui/encoder-ui/encoder-ui';
+import { DecoderMain } from '../src/ui/decoder-ui/decoder-main';
 
-export const IndexPage: FC = () => {
+const IndexPage: FC = () => {
   const [encodeFile, setEncodeFile] = useState<null | File>(null);
   const [decoding, setDecoding] = useState(false);
   const onRestart = () => {
@@ -30,3 +30,5 @@ export const IndexPage: FC = () => {
     </LayoutRoot>
   );
 };
+
+export default IndexPage;

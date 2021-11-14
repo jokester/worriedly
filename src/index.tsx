@@ -1,8 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.scss';
-import reportWebVitals from './reportWebVitals';
-import { IndexPage } from './pages';
+import { IndexPage } from '../pages';
 
 function registerHMR() {
   type ModuleHMR = typeof module & {
