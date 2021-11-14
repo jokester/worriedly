@@ -1,11 +1,6 @@
-import { useState } from 'react';
-import { Button } from '@chakra-ui/core';
+import { Button } from '@chakra-ui/react';
 import React from 'react';
-import { EncoderMain } from './encoder-ui/encoder-ui';
-import { PaperFrame, paperGrids } from './components/paper/paper-frame';
-import classNames from 'classnames';
 import { useFileInput } from './components/hooks/use-file-input';
-import { DecoderMain } from './decoder-ui/decoder-main';
 
 export const ModeSelector: React.FC<{ onStartEncode?(file: File): void; onStartDecode?(): void }> = (props) => {
   const [inputElem, inputOps] = useFileInput(

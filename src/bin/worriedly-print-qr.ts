@@ -2,7 +2,8 @@ import { ArgumentParser } from 'argparse';
 import { encodeBuffer } from '../core/node/creating-qr';
 import { renderQr } from '../core/model/render-pipeline';
 import { getWinstonLogger } from '@jokester/ts-commonutil/lib/logging/winston-logger';
-import { fsp, readStream } from '@jokester/ts-commonutil/lib/node';
+import { readStream } from '@jokester/ts-commonutil/lib/node';
+import { promises as fsp } from 'fs';
 
 const logger = getWinstonLogger(__filename, 'debug');
 
@@ -66,13 +67,12 @@ export function parseOptions(argv: string[]): PrintQrOptions {
 
 async function worriedlyPrintQrMain(options: PrintQrOptions) {
   const inputBytes: Buffer = options.inputFile
-    ? (((await fsp.readFile(options.inputFile, { encoding: 'buffer' })) as unknown) as Buffer)
+    ? ((await fsp.readFile(options.inputFile, { encoding: 'buffer' })) as Buffer)
     : await readStream(process.stdin);
 
   logger.info('NEED TO BE WRITTEN');
-  if (1) {
-    process.exit(1);
-  }
+  // eslint-disable-next-line no-process-exit
+  process.exit(1);
 
   // TODO: should warn user of capacity/err correcation level of QR codepac
   logger.info('got %d bytes', inputBytes.length);

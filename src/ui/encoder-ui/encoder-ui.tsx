@@ -5,7 +5,7 @@ import { usePromised } from '@jokester/ts-commonutil/lib/react/hook/use-promised
 import jsSha1 from 'js-sha1';
 import { binaryConversion } from '../../core/binary-conversion';
 import { RawFile, RenderedFile } from '../../core/model/pipeline';
-import { Button, FormControl, FormLabel, Input, Radio, RadioGroup } from '@chakra-ui/core';
+import { Button, FormControl, FormLabel, Input, Radio, RadioGroup } from '@chakra-ui/react';
 import { either } from 'fp-ts';
 import { paperGrids } from '../components/paper/paper-frame';
 import classNames from 'classnames';
@@ -73,7 +73,7 @@ export const EncoderMain: React.FC<{ inputFile: File }> = (props) => {
       <div className="flex ">
         <FormControl className="w-1/2">
           <FormLabel className="text-sm">Encode Preset </FormLabel>
-          <RadioGroup value={presetIndex} onChange={(ev) => setPresetIndex(Number(ev.target.value))}>
+          <RadioGroup value={presetIndex} onChange={(ev) => setPresetIndex(Number(ev))}>
             {encoderPresets.map((preset, i) => (
               <Radio key={i} value={i} size="sm">
                 {preset.name}
@@ -84,7 +84,7 @@ export const EncoderMain: React.FC<{ inputFile: File }> = (props) => {
 
         <FormControl className="w-1/2">
           <FormLabel className="text-sm">QR Code Correlation Level</FormLabel>
-          <RadioGroup value={levelIndex} onChange={(ev) => setLevelIndex(Number(ev.target.value))}>
+          <RadioGroup value={levelIndex} onChange={(ev) => setLevelIndex(Number(ev))}>
             {correctionLevels.map((l, i) => (
               <Radio key={i} value={i} size="sm">
                 {l.desc}

@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useFileInput } from '../components/hooks/use-file-input';
 import { paperGrids } from '../components/paper/paper-frame';
-import { Button } from '@chakra-ui/core';
+import { Button } from '@chakra-ui/react';
 import { FAIcon } from '../components/font-awesome-icon';
 import { Deferred } from '@jokester/ts-commonutil/lib/concurrency/deferred';
 import type { Result } from '@zxing/library';

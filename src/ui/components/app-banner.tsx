@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { tailwindComponents } from '../tailwind-components';
-import { Button } from '@chakra-ui/core';
+import { Button } from '@chakra-ui/react';
 import { FAIcon } from './font-awesome-icon';
 import classNames from 'classnames';
 import { styleOnlyComponents } from '../styles/style-only-components';

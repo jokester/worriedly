@@ -3,7 +3,7 @@ import { paperGrids } from '../components/paper/paper-frame';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { decodeFile } from '../../core/model/decode-pipeline';
 import { usePromised } from '@jokester/ts-commonutil/lib/react/hook/use-promised';
-import { Button, FormControl, FormLabel, Input, Radio, RadioGroup } from '@chakra-ui/core';
+import { Button, FormControl, FormLabel, Input, Radio, RadioGroup } from '@chakra-ui/react';
 import { decodePresets } from '../../core/model/decode-options';
 import classNames from 'classnames';
 import { useClippedIndex } from '../components/hooks/use-clipped';
@@ -28,7 +28,7 @@ export const DecoderOptions: React.FC<{ recognized: RecognizedFile }> = (props) 
         </h2>
         <FormControl className="w-1/2">
           <FormLabel className="text-sm">Decode Preset </FormLabel>
-          <RadioGroup value={presetIndex} onChange={(ev) => setPresetIndex(Number(ev.target.value))}>
+          <RadioGroup value={presetIndex} onChange={(v) => setPresetIndex(Number(v))}>
             {decodePresets.map((preset, i) => (
               <Radio key={i} value={i} size="sm">
                 {preset.name}
