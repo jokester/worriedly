@@ -12,12 +12,12 @@
       "typings",
       "node_modules/@types"
     ],
+    "incremental": true,
     "lib": [
       "dom",
       "dom.iterable",
       "esnext"
-    ],
-    "incremental": true
+    ]
   },
   "exclude": [
     "node_modules",
@@ -27,10 +27,11 @@
     "legacy",
     "__test__",
     "bin",
-    "jest.config.js"
+    "*.js"
   ],
   "include": [
-    "pages",
-    "src"
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
   ]
 }

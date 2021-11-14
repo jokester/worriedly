@@ -176,6 +176,7 @@ const DevicePreview: React.FC<{ deviceInfo: MediaDeviceInfo; deviceIndex: number
     );
   }
 
+  // eslint-disable-next-line no-constant-condition
   if (deviceInfo.deviceId && 0) {
     return (
       <>

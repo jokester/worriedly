@@ -79,6 +79,7 @@ module.exports = withPlugins(
         // eslint-disable-next-line node/no-unpublished-require
         require('next-transpile-modules')([
           '@jokester/ts-commonutil',
+          '@zxing/library',
           // 'lodash-es',
           /* ES modules used in server code */
         ]),

@@ -1,0 +1,54 @@
+name: Export static build
+
+on: [push, pull_request]
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  check:
+    name: Check
+    runs-on: ubuntu-20.04
+
+    steps:
+
+      - uses: actions/checkout@v2
+
+      - name: setup node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: "14.x"
+
+      - uses: bahmutov/npm-install@v1
+
+      - name: Type Check
+        run: yarn typecheck
+
+      - name: Lint
+        run: yarn lint
+
+      - name: Test
+        run: yarn test --ci
+
+      - name: Create Prod Build with bundle analyze
+        run: yarn analyze
+
+      - name: Upload bundle Analyze Report
+        uses: actions/upload-artifact@v2
+        with:
+          name: webpack-bundle-analyzer-report
+          path: |
+            .next/server/analyze/server.html
+            .next/analyze/client.html
+
+      - name: Export site
+        run: |
+          yarn export && tar -cJvf out.txz out
+
+      - name: Upload exported assets
+        uses: actions/upload-artifact@v2
+        with:
+          name: webpack-bundle-analyzer-report
+          path: out.txz
+          if-no-files-found: error

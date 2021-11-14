@@ -39,7 +39,7 @@ const chainTasksT /* T for tail */ = async <
   B4 = void,
   B5 = void,
   B6 = void,
-  B7 = void
+  B7 = void,
 >(
   task1: () => MaybePromise<Either<A, B1>>,
   task2?: (b1: B1) => MaybePromise<Either<A, B2>>,
